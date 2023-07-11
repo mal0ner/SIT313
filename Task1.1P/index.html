@@ -4,7 +4,13 @@
     <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="style.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <nav class="nav">
@@ -16,9 +22,16 @@
     </nav>
     <div class="hero-container"></div>
     <div id="profile-container">
-      <img src="#" alt="Cameron's Profile Picture" />
+      <div class="img-wrapper">
+        <img
+          src="./media/profile.PNG"
+          alt="Cameron's Profile Picture"
+          id="profile-pic"
+        />
+      </div>
+      <h1>Cameron Malone</h1>
       <p id="profile-description">
-        I am a full-stack web developer based in Melbourne, Australia
+        full-stack web developer based in Melbourne, Australia
       </p>
       <!-- <div id="separator"></div> -->
     </div>
@@ -26,21 +39,55 @@
       <hr />
       <h1 class="section-header">Here's what i've done so far</h1>
       <div class="project-container">
-        <img src="#" alt="Project thumbnail" class="project-thumbnail" />
-        <h2>Project 1</h2>
+        <img
+          src="./media/penrose_gallery.png"
+          alt="Project 1 thumbnail"
+          class="project-thumbnail"
+        />
+        <h2>Penrose Gallery</h2>
       </div>
       <div class="project-container">
-        <img src="#" alt="Project thumbnail" class="project-thumbnail" />
-        <h2>Project 2</h2>
+        <img
+          src="./media/aaga.png"
+          alt="Project 2 thumbnail"
+          class="project-thumbnail"
+        />
+        <h2>Aboriginal Art Gallery of Australia</h2>
       </div>
       <div class="project-container">
-        <img src="#" alt="Project thumbnail" class="project-thumbnail" />
-        <h2>Project 3</h2>
+        <img
+          src="./media/scrapmaps.png"
+          alt="Project 3 thumbnail"
+          class="project-thumbnail"
+        />
+        <h2>Scrap Maps</h2>
       </div>
     </div>
-    <div id="gallery">
-      <hr />
-      <h1 class="section-header">My Photos</h1>
+    <div class="gallery">
+      <div class="gallery-header">
+        <hr id="gallery-separator" />
+        <h1 class="section-header">My Photos</h1>
+        <p>Photos sourced from www.unsplash.com</p>
+      </div>
+      <div class="gallery-container">
+        <div class="image-column">
+          <img src="./media/gallery/1.jpg" alt="" />
+          <img src="./media/gallery/2.jpg" alt="" />
+          <img src="./media/gallery/3.jpg" alt="" />
+        </div>
+
+        <div class="image-column">
+          <img src="./media/gallery/4.jpg" alt="" />
+          <img src="./media/gallery/5.jpg" alt="" />
+          <img src="./media/gallery/6.jpg" alt="" />
+        </div>
+
+        <div class="image-column">
+          <img src="./media/gallery/7.jpg" alt="" />
+          <img src="./media/gallery/8.jpg" alt="" />
+          <img src="./media/gallery/9.jpg" alt="" />
+        </div>
+      </div>
     </div>
   </body>
 </html>
