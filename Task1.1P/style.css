@@ -50,6 +50,55 @@ a::before {
   font-size: 2rem;
 }
 
+.hero-container {
+  position: relative;
+}
+
+#hero-image {
+  width: 100%;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+#hero-text {
+  position: absolute;
+  font-size: 1.5rem;
+  top: 40%;
+  left: 40%;
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+#hero-text::after {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: width 0.3s;
+}
+
+.hero-container:hover > #hero-text {
+  opacity: 1;
+}
+
+.hero-container:hover > #hero-text::after {
+  width: 0;
+}
+
+#hero-image:after {
+  content: 'Hello, my name is Cameron';
+  position: absolute;
+  display: inline-block;
+  z-index: 10;
+  width: 100px;
+  height: 100px;
+}
+
 #profile-container {
   margin-top: 1rem;
   display: flex;
@@ -93,13 +142,6 @@ hr {
   width: 200px;
   border-radius: 1rem;
 }
-
-/* .gallery { */
-/*   display: flex; */
-/*   flex-direction: column; */
-/*   align-items: center; */
-/*   justify-content: center; */
-/* } */
 
 .gallery-header {
   display: flex;
