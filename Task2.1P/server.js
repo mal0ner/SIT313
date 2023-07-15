@@ -2,10 +2,10 @@ const sgMail = require('@sendgrid/mail');
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config(); //init dotenv for secrets file
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const port = process.env.port || 8080;
+const port = process.env.port || 8080; //optional .env port spec
 const app = express();
 
 //serve static files middleware
@@ -25,6 +25,7 @@ async function sendMail(msg) {
 }
 
 async function sendWelcomeEmail(recipient) {
+  //email template text
   await sendMail({
     to: recipient,
     from: 'gegemalone@gmail.com',
@@ -34,10 +35,13 @@ async function sendWelcomeEmail(recipient) {
 }
 
 app.get('/', function (_, response) {
+  //serve home page at root URL
   response.sendFile(path.join(__dirname, 'index.html'));
 });
 
+//listen for post-req from html form input
 app.post('/sign-up', function (request, response) {
+  //body-parser gives us convenient access to body.<field> from form
   sendWelcomeEmail(request.body.email);
   response.sendStatus(200);
 });
