@@ -4,18 +4,15 @@
     <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="style.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
   </head>
   <body>
     <div id="mail-container">
       <h1>SIGN UP FOR OUR DAILY INSIDER</h1>
-      <input
-        type="text"
-        name="mail-input"
-        value=""
-        placeholder="Enter your email"
-      />
-      <button type="">Subscribe</button>
+      <form action="/sign-up" method="POST">
+        <input name="email" type="email" id="email-input" required />
+        <button type="submit">Subscribe</button>
+      </form>
     </div>
   </body>
 </html>
