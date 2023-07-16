@@ -13,10 +13,16 @@ Cameron Malone 218344989
 
 ## Visual Resources:
 
-| Type          | Source       |
-| ------------- | ------------ |
-| Vector Images | blush.design |
-| Fonts         | Google Fonts |
+| Type                     | Source        |
+| ------------------------ | ------------- |
+| Vector Images            | blush.design  |
+| Fonts                    | Google Fonts  |
+| Dev and customer avatars | boringavatars |
+| Filler text/user data    | FakerJS       |
 
 All imagery in this website mockup was sourced via a premium subscription to www.blush.design.
 Free-use fonts used are _Julia_ (Headers) and _Josefin_ (body) and can be found on Google Fonts.
+
+### Additional Resources:
+
+- Help on star ratings in CSS: https://css-tricks.com/five-methods-for-five-star-ratings/
