@@ -1,5 +1,4 @@
 import Avatar from 'boring-avatars';
-import { faker } from '@faker-js/faker';
 
 import {
   Card,
@@ -10,68 +9,62 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-function ProfileCard() {
-  const profileName = faker.person.fullName();
-  const profilePhrase = faker.hacker.phrase();
-  const rating = 4 + faker.number.float({ precision: 0.1 });
-  // let ratingStyle =
-  //   "inline-block text-lg before:content-['●●●●●'] before:bg-[linear-gradient(90deg,_#000000_" +
-  //   rating +
-  //   '%,_#9DA3AE_' +
-  //   rating +
-  //   '%)] before:bg-clip-text before:text-transparent';
-  const langs = [
-    'Java',
-    'C++',
-    'Python',
-    'Ruby',
-    'Go',
-    'C#',
-    'Haskell',
-    'OCaml',
-    'Erlang',
-    'Elixir',
-    'React',
-    'Typescript',
-    'Angular',
-    'Svelte',
-    'Fortran',
-    'COBOL',
-    'Mojo',
-    'Rust',
-    'Flutter',
-    'Zig',
-    'Ruby',
-    'Django',
-    '.NET',
-    'Mediocre',
-  ];
+interface DeveloperProfile {
+  avatarOpts: {
+    size: number;
+  };
+  fullName: string;
+  language: string;
+  description: string;
+  rating: number;
+}
 
+interface CustomerProfile {
+  avatarOpts: {
+    size: number;
+  };
+  fullName: string;
+  jobTitle: string;
+  company: string;
+  aboutMe: string;
+}
+
+function ProfileCard(props: CustomerProfile | DeveloperProfile) {
   return (
     <>
-      <Card className="w-[300px] hover:bg-slate-100">
-        <CardHeader className="items-center">
-          <CardTitle>
+      <Card className="flex flex-col p-1 justify-between w-4/5 sm:w-2/5 md:w-1/3 lg:w-1/5 hover:bg-slate-100 hover:drop-shadow-lg hover:cursor-pointer">
+        <CardHeader className="items-center p-2 select-none">
+          <CardTitle className="text-xs md:text-lg text-center">
             <div className="flex justify-center m-3">
               <Avatar
-                size={100}
-                name={profileName}
+                size={props.avatarOpts.size}
+                name={props.fullName}
                 variant="beam"
                 colors={['#AFD6D7', '#FE9C3B', '#92A95C', '#D9A884', '#75996C']}
               />
             </div>
-            {profileName}
+            {props.fullName}
           </CardTitle>
-          <CardDescription>
-            {langs[Math.floor(Math.random() * langs.length)]} Developer
+          <CardDescription className="text-xs md:text-md text-center">
+            {'language' in props && <div>{props.language} Developer</div>}
+            {'jobTitle' in props && <div>{props.jobTitle}</div>}
+            {'company' in props && (
+              <div className="font-bold">{props.company}</div>
+            )}
           </CardDescription>
         </CardHeader>
-        <CardContent className="text-center">{profilePhrase}</CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="mr-3 bg-green-200 p-2 rounded-lg">
-            <span className="font-bold">Rating:</span> {rating} / 5
-          </p>
-        </CardFooter>
+        <CardContent className="text-center hidden md:block select-none">
+          {'description' in props && <div>{props.description}</div>}
+          {'aboutMe' in props && <div>{props.aboutMe}</div>}
+        </CardContent>
+        {'rating' in props && (
+          <CardFooter className="justify-center text-xs select-none">
+            <p className="bg-green-200 p-2 flex justify-center gap-1 rounded-lg w-11/12">
+              <span className="font-bold hidden md:block">Rating: </span>{' '}
+              {props.rating} / 5
+            </p>
+          </CardFooter>
+        )}
       </Card>
     </>
   );
