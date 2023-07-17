@@ -21,7 +21,7 @@ Cameron Malone 218344989
 | Filler text/user data    | FakerJS       |
 
 All imagery in this website mockup was sourced via a premium subscription to www.blush.design.
-Free-use fonts used are _Julia_ (Headers) and _Josefin_ (body) and can be found on Google Fonts.
+Free-use fonts used are _Yeseva_ (Headers) and _Josefin_ (accent) and can be found on Google Fonts.
 
 ### Additional Resources:
 
