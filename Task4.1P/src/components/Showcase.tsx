@@ -1,4 +1,5 @@
 import ProfileCard from '@/components/ProfileCard';
+import { Button } from '@/components/ui/button';
 import { faker } from '@faker-js/faker';
 
 interface ShowcaseOpts {
@@ -104,6 +105,9 @@ function Showcase(props: ShowcaseOpts) {
               ></ProfileCard>
             ))}
         </div>
+        <Button variant="default">
+          <a href="#">See More</a>
+        </Button>
       </section>
     </>
   );
