@@ -32,7 +32,7 @@ function Navbar() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Find Devs</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-1 p-6 md:w-[100px] lg:w-[200px]">
+                  <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
                     <ListItem href="#" title="Frontend"></ListItem>
                     <ListItem href="#" title="Backend"></ListItem>
                     <ListItem href="#" title="Full-stack"></ListItem>
@@ -43,7 +43,7 @@ function Navbar() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Find Jobs</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-1 p-6 md:w-[100px] lg:w-[200px]">
+                  <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
                     <ListItem href="#" title="Go"></ListItem>
                     <ListItem href="#" title="C#"></ListItem>
                     <ListItem href="#" title="Typescript"></ListItem>
