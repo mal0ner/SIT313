@@ -2,8 +2,10 @@
 import './App.css';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-// import ProfileCard from '@/components/ProfileCard';
 import Showcase from '@/components/Showcase';
+import Newsletter from '@/components/Newsletter';
+import Footer from '@/components/Footer';
+import { Separator } from '@/components/ui/separator';
 
 function App() {
   return (
@@ -13,13 +15,16 @@ function App() {
       <Showcase
         type="developer"
         title="Featured Freelancers"
-        numProfiles={2}
+        numProfiles={3}
       ></Showcase>
       <Showcase
         type="customer"
         title="Featured Customers"
-        numProfiles={2}
+        numProfiles={3}
       ></Showcase>
+      <Newsletter></Newsletter>
+      <Separator className="mb-6 mt-6" />
+      <Footer></Footer>
     </>
   );
 }
