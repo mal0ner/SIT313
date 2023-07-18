@@ -19,6 +19,7 @@ Cameron Malone 218344989
 | Fonts                    | Google Fonts  |
 | Dev and customer avatars | boringavatars |
 | Filler text/user data    | FakerJS       |
+| Social Media Icons       | Lucide-React  |
 
 All imagery in this website mockup was sourced via a premium subscription to www.blush.design.
 Free-use fonts used are _Yeseva_ (Headers) and _Josefin_ (accent) and can be found on Google Fonts.
