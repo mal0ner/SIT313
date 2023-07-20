@@ -12,8 +12,13 @@
 
 .nav-links {
   display: flex;
-  width: 30%;
+  font-size: 1.5rem;
+  width: 20%;
   justify-content: space-between;
+}
+
+.nav-links a {
+  margin-right: 1rem;
 }
 
 a {
@@ -62,7 +67,7 @@ a::before {
 
 #hero-text {
   position: absolute;
-  font-size: 1.5rem;
+  font-size: 3rem;
   top: 40%;
   left: 40%;
   z-index: 10;
@@ -229,6 +234,11 @@ footer {
 
   .nav-links {
     width: 100%;
+    font-size: 1rem;
+  }
+
+  #hero-text {
+    font-size: 1.5rem;
   }
 
   .contact-container {
