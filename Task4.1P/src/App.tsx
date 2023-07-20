@@ -12,18 +12,23 @@ function App() {
     <>
       <Navbar></Navbar>
       <Hero></Hero>
+
       <Showcase
         type="developer"
         title="Featured Freelancers"
         numProfiles={3}
       ></Showcase>
+
       <Showcase
         type="customer"
         title="Featured Customers"
         numProfiles={3}
       ></Showcase>
+
       <Newsletter></Newsletter>
+
       <Separator className="mb-6 mt-6" />
+
       <Footer></Footer>
     </>
   );
