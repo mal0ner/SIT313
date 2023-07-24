@@ -7,12 +7,10 @@ import { cn } from '@/lib/utils';
 import {
   NavigationMenu,
   NavigationMenuContent,
-  // NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  // NavigationMenuViewport,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 
@@ -33,9 +31,8 @@ function Navbar() {
                 <NavigationMenuTrigger>Find Devs</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
-                    <ListItem href="#" title="Frontend"></ListItem>
-                    <ListItem href="#" title="Backend"></ListItem>
-                    <ListItem href="#" title="Full-stack"></ListItem>
+                    <ListItem href="#" title="New Post"></ListItem>
+                    <ListItem href="#" title="All Posts"></ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -44,11 +41,8 @@ function Navbar() {
                 <NavigationMenuTrigger>Find Jobs</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
-                    <ListItem href="#" title="Go"></ListItem>
-                    <ListItem href="#" title="C#"></ListItem>
-                    <ListItem href="#" title="Typescript"></ListItem>
-                    <ListItem href="#" title="Rust"></ListItem>
-                    <ListItem href="#" title="Python"></ListItem>
+                    <ListItem href="#" title="New Post"></ListItem>
+                    <ListItem href="#" title="All Posts"></ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
