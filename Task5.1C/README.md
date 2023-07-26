@@ -27,7 +27,6 @@ Free-use fonts used are _Yeseva_ (Headers) and _Josefin_ (accent) and can be fou
 
 ### Additional Resources:
 
-- Help on star ratings in CSS: https://css-tricks.com/five-methods-for-five-star-ratings/
 - React Hook Forms with Zod validation: https://ui.shadcn.com/docs/components/form
 - React-Router-Dom Outlet usage: https://stackoverflow.com/questions/70833727/using-react-router-v6-i-need-a-navbar-to-permanently-be-there-but-cant-display
 - React-Router-Dom Styling active link: https://stackoverflow.com/questions/71605440/react-router-v6-activestyle-issues
