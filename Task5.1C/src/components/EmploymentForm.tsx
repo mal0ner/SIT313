@@ -1,6 +1,6 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
+import { Plus, Minus } from 'lucide-react';
 
 //coerce allows for string input to be autocast to number
 const formSchema = z.object({
@@ -29,6 +30,12 @@ const formSchema = z.object({
   paymentMin: z.coerce.number().gt(0),
   paymentMax: z.coerce.number().gt(0),
   workingHours: z.coerce.number().gt(0).lt(24),
+  experience: z.array(
+    z.object({
+      type: z.string().min(1, { message: 'Must not be empty' }),
+      years: z.string().min(1, { message: 'Must not be empty' }),
+    }),
+  ),
 });
 
 function FreelanceForm() {
@@ -36,13 +43,19 @@ function FreelanceForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      jobtype: 'freelance',
+      jobtype: 'employment',
       title: '',
       skills: '',
       projectLength: '',
       paymentMin: 0,
       paymentMax: 0,
       workingHours: 0,
+      experience: [
+        {
+          type: '',
+          years: '',
+        },
+      ],
     },
   });
 
@@ -51,6 +64,11 @@ function FreelanceForm() {
     // This will be DB connection eventually
     console.log(values);
   }
+
+  const { fields, append, remove } = useFieldArray({
+    name: 'experience',
+    control: form.control,
+  });
 
   return (
     <>
@@ -75,7 +93,7 @@ function FreelanceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
             <FormField
               control={form.control}
@@ -92,7 +110,7 @@ function FreelanceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
             <FormField
               control={form.control}
@@ -113,7 +131,7 @@ function FreelanceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
             <Separator />
             <h2 className="text-2xl font-yeseva">Project Conditions</h2>
@@ -130,7 +148,7 @@ function FreelanceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
             <FormField
               control={form.control}
@@ -147,7 +165,7 @@ function FreelanceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
             <FormField
               control={form.control}
@@ -164,7 +182,7 @@ function FreelanceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
             <FormField
               control={form.control}
@@ -173,18 +191,74 @@ function FreelanceForm() {
                 <FormItem>
                   <FormLabel>Weekly Hours</FormLabel>
                   <FormControl>
-                    <span>
-                      <Input placeholder="8" type="number" {...field} />
-                    </span>
+                    <Input placeholder="8" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
 
-            <Button className="w-fit pl-12 pr-12" type="submit">
-              Post
-            </Button>
+            <div className="flex flex-col gap-3">
+              {fields.map((field, index) => (
+                <div className="flex gap-3">
+                  <FormField
+                    control={form.control}
+                    key={field.id}
+                    name={`experience.${index}.type`}
+                    render={({ field }) => (
+                      <FormItem>
+                        {index == 0 && <FormLabel>Experience</FormLabel>}
+                        {index == 0 && (
+                          <FormDescription>What technology?</FormDescription>
+                        )}
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    key={field.id}
+                    name={`experience.${index}.years`}
+                    render={({ field }) => (
+                      <FormItem>
+                        {index == 0 && <FormLabel>Years</FormLabel>}
+                        {index == 0 && (
+                          <FormDescription>How long?</FormDescription>
+                        )}
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-6">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => append({ type: '', years: '' })}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => remove(-1)}
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+            </div>
+
+            <Button type="submit">Post</Button>
           </form>
         </Form>
       </div>
