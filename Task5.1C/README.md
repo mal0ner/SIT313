@@ -34,3 +34,4 @@ Free-use fonts used are _Yeseva_ (Headers) and _Josefin_ (accent) and can be fou
 - React-Router-Dom getting started: https://reactrouter.com/en/main/start/tutorial
 - Zod Form Resolver type checking syntax help: https://github.com/react-hook-form/resolvers/issues/73
 - Nested Objects in Zod: https://stackoverflow.com/questions/74967542/zod-validation-for-an-array-of-objects
+- ShadCN-UI Website examples: https://github.com/shadcn-ui/ui/blob/main/apps/www/app/examples/forms/profile-form.tsx
