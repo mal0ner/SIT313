@@ -2,10 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import ErrorPage from '@/pages/ErrorPage';
 import './index.css';
+
+import ErrorPage from '@/pages/ErrorPage';
 import HomePage from '@/pages/HomePage';
+import NewJobPage from '@/pages/NewJobPage';
+
 import FreelanceForm from '@/components/FreelanceForm';
+import EmploymentForm from '@/components/EmploymentForm';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +24,20 @@ const router = createBrowserRouter([
       {
         path: 'find-dev',
         element: <FreelanceForm />,
+      },
+      {
+        path: 'find/',
+        element: <NewJobPage />,
+        children: [
+          {
+            path: 'freelancers',
+            element: <FreelanceForm />,
+          },
+          {
+            path: 'employees',
+            element: <EmploymentForm />,
+          },
+        ],
       },
     ],
   },
