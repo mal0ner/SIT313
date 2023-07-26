@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 //ShadCN Navigation Menu component import
 import {
@@ -31,7 +32,9 @@ function Navbar() {
                 <NavigationMenuTrigger>Find Devs</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
-                    <ListItem href="#" title="New Post"></ListItem>
+                    <Link to={'/find/freelancers'}>
+                      <ListItem href="#" title="New Post"></ListItem>
+                    </Link>
                     <ListItem href="#" title="All Posts"></ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -83,7 +86,7 @@ const ListItem = React.forwardRef<
           ref={ref}
           className={cn(
             'block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-sky-200 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-            className
+            className,
           )}
           {...props}
         >
