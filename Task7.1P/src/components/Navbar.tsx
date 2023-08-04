@@ -55,7 +55,7 @@ function Navbar() {
                   href="#"
                   className={navigationMenuTriggerStyle()}
                 >
-                  Login
+                  <Link to={'/login'}>Login</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
