@@ -64,7 +64,7 @@ function Navbar() {
                   href="#"
                   className={navigationMenuTriggerStyle()}
                 >
-                  Create Account
+                  <Link to={'/signup'}>Create Account</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
