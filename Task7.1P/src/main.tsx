@@ -7,6 +7,7 @@ import './index.css';
 import ErrorPage from '@/pages/ErrorPage';
 import HomePage from '@/pages/HomePage';
 import NewJobPage from '@/pages/NewJobPage';
+import LoginPage from '@/pages/LoginPage';
 
 import FreelanceForm from '@/components/FreelanceForm';
 import EmploymentForm from '@/components/EmploymentForm';
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <LoginPage />,
   },
 ]);
 
