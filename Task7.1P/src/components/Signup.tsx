@@ -53,7 +53,7 @@ export default function Signup() {
     //dont submit the form if a user exists already
     if (await checkUserExists(values.email)) {
       signupForm.setError('email', {
-        message: 'An account with that email already exists, ',
+        message: 'An account with that email already exists',
       });
       return;
     }
