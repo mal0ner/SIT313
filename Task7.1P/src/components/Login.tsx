@@ -1,8 +1,16 @@
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
+import * as z from 'zod';
+import {
+  checkUserExists,
+  loginAuthUserWithEmailAndPassword,
+} from '@/utils/firebase';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -11,12 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import {
-  checkUserExists,
-  loginAuthUserWithEmailAndPassword,
-} from '@/utils/firebase';
-import { useNavigate } from 'react-router-dom';
 
 const loginSchema = z
   .object({
@@ -35,6 +37,7 @@ const loginSchema = z
 
 export default function Login() {
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,10 +45,6 @@ export default function Login() {
       password: '',
     },
   });
-
-  //TODO: See https://stackoverflow.com/questions/75148276/email-validation-with-zod
-  //for information on how to correctly check emails against db and show
-  //zod schema error messages
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     //Do something with form values
@@ -63,6 +62,10 @@ export default function Login() {
         );
       }
     }
+  }
+
+  function togglePasswordVisible() {
+    setPasswordVisible(!passwordVisible);
   }
 
   return (
@@ -97,11 +100,24 @@ export default function Login() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="**********"
-                      type="password"
-                      {...field}
-                    />
+                    <div className="flex items-center gap-1">
+                      <Input
+                        placeholder="**********"
+                        type={passwordVisible ? 'text' : 'password'}
+                        {...field}
+                      />
+                      {passwordVisible ? (
+                        <EyeOff
+                          onClick={togglePasswordVisible}
+                          className="cursor-pointer"
+                        />
+                      ) : (
+                        <Eye
+                          onClick={togglePasswordVisible}
+                          className="cursor-pointer"
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

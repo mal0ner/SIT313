@@ -1,8 +1,16 @@
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import * as z from 'zod';
+import {
+  checkUserExists,
+  handleUserSignupEmailPassword,
+} from '@/utils/firebase';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -11,12 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import {
-  checkUserExists,
-  handleUserSignupEmailPassword,
-} from '@/utils/firebase';
-import { useNavigate } from 'react-router-dom';
 
 const signupSchema = z
   .object({
@@ -39,6 +41,7 @@ const signupSchema = z
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const signupForm = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -48,6 +51,10 @@ export default function Signup() {
       confirmPassword: '',
     },
   });
+
+  function togglePasswordVisible() {
+    setPasswordVisible(!passwordVisible);
+  }
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     //dont submit the form if a user exists already
@@ -117,7 +124,24 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="*******" type="password" {...field} />
+                  <div className="flex items-center gap-1">
+                    <Input
+                      placeholder="*******"
+                      type={passwordVisible ? 'text' : 'password'}
+                      {...field}
+                    />
+                    {passwordVisible ? (
+                      <EyeOff
+                        onClick={togglePasswordVisible}
+                        className="cursor-pointer text-gray-400"
+                      />
+                    ) : (
+                      <Eye
+                        onClick={togglePasswordVisible}
+                        className="cursor-pointer text-gray-400"
+                      />
+                    )}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -131,7 +155,11 @@ export default function Signup() {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="*******" type="password" {...field} />
+                  <Input
+                    placeholder="*******"
+                    type={passwordVisible ? 'text' : 'password'}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
