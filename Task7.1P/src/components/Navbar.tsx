@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { auth, signOutCurrentUser } from '@/utils/firebase';
+import { User } from 'firebase/auth';
 //ShadCN Navigation Menu component import
 import {
   NavigationMenu,
@@ -14,15 +15,29 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import { Separator } from './ui/separator';
 
 function Navbar() {
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = React.useState<User | null>(null);
+
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+    });
+
+    // clean up on component unmount
+    return () => unsubscribe();
+  });
   return (
     <>
       <div className="flex justify-center md:justify-between font-josefin m-4">
         <h1 className="font-bold italic text-xl select-none">
-          <span className="bg-sky-200 p-2 rounded hover:bg-blue-300 transition ease duration-200">
-            DevLink
-          </span>{' '}
+          <Link to={'/'}>
+            <span className="bg-sky-200 p-2 rounded hover:bg-blue-300 transition ease duration-200">
+              DevLink
+            </span>
+          </Link>{' '}
           Marketplace
         </h1>
         <nav className="bold hidden md:flex font-josefin">
@@ -31,7 +46,7 @@ function Navbar() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Find Devs</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
+                  <ul className="grid gap-1 p-3 md:w-[150px] lg:w-[200px]">
                     <Link to={'/find/freelancers'}>
                       <ListItem href="#" title="New Post"></ListItem>
                     </Link>
@@ -43,30 +58,77 @@ function Navbar() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Find Jobs</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-1 p-6 md:w-[150px] lg:w-[200px]">
+                  <ul className="grid gap-1 p-3 md:w-[150px] lg:w-[200px]">
                     <ListItem href="#" title="New Post"></ListItem>
                     <ListItem href="#" title="All Posts"></ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="#"
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link to={'/login'}>Login</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+              {currentUser ? (
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <div className="flex items-center">
+                        <NavigationMenuTrigger>Profile</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid gap-1 p-3 md:w-[150px] lg:w-[200px]">
+                            <h1>
+                              {currentUser ? currentUser.displayName : ''}
+                            </h1>
+                            <Separator />
+                            <Link to="#">
+                              <ListItem>Posts</ListItem>
+                            </Link>
+                            <Link to="#">
+                              <ListItem>Edit Profile</ListItem>
+                            </Link>
+                            <Separator />
+                            <ListItem
+                              onClick={() => {
+                                signOutCurrentUser();
+                                navigate('/');
+                              }}
+                              className="cursor-pointer"
+                            >
+                              Sign Out
+                            </ListItem>
+                          </ul>
+                        </NavigationMenuContent>
+                        {currentUser && currentUser.photoURL ? (
+                          <img
+                            src={currentUser.photoURL}
+                            alt="profile picture"
+                            width={50}
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              ) : (
+                <div className="flex">
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      href="#"
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      <Link to={'/login'}>Login</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="#"
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link to={'/signup'}>Create Account</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      href="#"
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      <Link to={'/signup'}>Create Account</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </div>
+              )}
             </NavigationMenuList>
           </NavigationMenu>
         </nav>
