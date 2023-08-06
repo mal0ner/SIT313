@@ -10,9 +10,12 @@ import {
   fetchSignInMethodsForEmail,
   User,
   signInWithEmailAndPassword,
+  updateProfile,
+  signOut,
 } from 'firebase/auth';
 
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { getCustomAvatarURL } from '@/utils/avatars';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCfSqLAb2nKru3uwSMcI4TkY1TEgy00mYs',
@@ -38,6 +41,27 @@ export async function checkUserExists(email: string): Promise<boolean> {
   return signInMethods.length > 0;
 }
 
+export async function handleUserSignupEmailPassword(
+  email: string,
+  password: string,
+  name: string,
+) {
+  try {
+    const { user } = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    // This generates a random but deterministic embedded avatar URL from boringAvatars package which we
+    // can then store in their Auth userProfile information for access whenever we want to display their
+    // profile pic
+    const avatarURL = getCustomAvatarURL(email);
+    await updateProfile(user, { displayName: name, photoURL: avatarURL });
+    await createUserDocFromAuth(user, name);
+  } catch (error) {
+    throw error;
+  }
+}
 export async function createAuthUserWithEmailAndPassword(
   email: string,
   password: string,
@@ -50,6 +74,13 @@ export async function loginAuthUserWithEmailAndPassword(
   password: string,
 ) {
   return await signInWithEmailAndPassword(auth, email, password);
+}
+
+export async function signOutCurrentUser() {
+  if (!auth.currentUser) {
+    return;
+  }
+  await signOut(auth);
 }
 
 export async function createUserDocFromAuth(userAuth: User, name: string) {
