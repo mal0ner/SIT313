@@ -14,8 +14,6 @@ import {
 import { Input } from '@/components/ui/input';
 import {
   checkUserExists,
-  // createAuthUserWithEmailAndPassword,
-  // createUserDocFromAuth,
   handleUserSignupEmailPassword,
 } from '@/utils/firebase';
 import { useNavigate } from 'react-router-dom';
@@ -37,19 +35,7 @@ const signupSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
     message: 'Passwords do not match',
-  })
-  .refine(
-    async (data) => {
-      const userExists = await checkUserExists(data.email);
-      // refine error message is thrown when this function evaluates to false
-      // so we want to return false if the user does exist
-      return !userExists;
-    },
-    {
-      path: ['email'],
-      message: 'User already exists in database',
-    },
-  );
+  });
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -64,12 +50,13 @@ export default function Signup() {
   });
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
-    // This will use firebase to create a new user record in the
-    // Auth service
-
-    // TODO: Signup Email should be checked against existing firestore db
-    // in case of conflict.
-
+    //dont submit the form if a user exists already
+    if (await checkUserExists(values.email)) {
+      signupForm.setError('email', {
+        message: 'An account with that email already exists, ',
+      });
+      return;
+    }
     try {
       await handleUserSignupEmailPassword(
         values.email,
@@ -78,11 +65,6 @@ export default function Signup() {
       );
       // Redirect to home page after signup
       navigate('/');
-      // const { user } = await createAuthUserWithEmailAndPassword(
-      //   values.email,
-      //   values.password,
-      // );
-      // await createUserDocFromAuth(user, values.name);
     } catch (error: any) {
       console.log(error.message);
     }
