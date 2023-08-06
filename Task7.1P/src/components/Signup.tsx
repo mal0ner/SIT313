@@ -14,9 +14,11 @@ import {
 import { Input } from '@/components/ui/input';
 import {
   checkUserExists,
-  createAuthUserWithEmailAndPassword,
-  createUserDocFromAuth,
+  // createAuthUserWithEmailAndPassword,
+  // createUserDocFromAuth,
+  handleUserSignupEmailPassword,
 } from '@/utils/firebase';
+import { useNavigate } from 'react-router-dom';
 
 const signupSchema = z
   .object({
@@ -50,6 +52,7 @@ const signupSchema = z
   );
 
 export default function Signup() {
+  const navigate = useNavigate();
   const signupForm = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -68,12 +71,18 @@ export default function Signup() {
     // in case of conflict.
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
+      await handleUserSignupEmailPassword(
         values.email,
         values.password,
+        values.name,
       );
-      console.log(user);
-      await createUserDocFromAuth(user, values.name);
+      // Redirect to home page after signup
+      navigate('/');
+      // const { user } = await createAuthUserWithEmailAndPassword(
+      //   values.email,
+      //   values.password,
+      // );
+      // await createUserDocFromAuth(user, values.name);
     } catch (error: any) {
       console.log(error.message);
     }

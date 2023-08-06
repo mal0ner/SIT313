@@ -16,6 +16,7 @@ import {
   checkUserExists,
   loginAuthUserWithEmailAndPassword,
 } from '@/utils/firebase';
+import { useNavigate } from 'react-router-dom';
 
 const loginSchema = z
   .object({
@@ -33,6 +34,7 @@ const loginSchema = z
   );
 
 export default function Login() {
+  const navigate = useNavigate();
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -50,10 +52,8 @@ export default function Login() {
     //this will use firebase to check user against existing user
     //documents
     try {
-      return await loginAuthUserWithEmailAndPassword(
-        values.email,
-        values.password,
-      );
+      await loginAuthUserWithEmailAndPassword(values.email, values.password);
+      navigate('/');
     } catch (error: any) {
       if (error.code === 'auth/wrong-password') {
         loginForm.setError('password', { message: 'Incorrect Password' });
