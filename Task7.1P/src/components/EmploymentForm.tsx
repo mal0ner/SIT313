@@ -29,7 +29,7 @@ const formSchema = z.object({
   projectLength: z.string().min(1).max(15),
   paymentMin: z.coerce.number().gt(0),
   paymentMax: z.coerce.number().gt(0),
-  workingHours: z.coerce.number().gt(0).lt(24),
+  workingHours: z.coerce.number().gt(0).lt(100),
   experience: z.array(
     z.object({
       type: z.string().min(1, { message: 'Must not be empty' }),
