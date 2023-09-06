@@ -60,6 +60,7 @@ function FreelanceForm() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-10 max-w-prose"
           >
+            <h2 className="text-2xl font-yeseva">New Freelance Offer</h2>
             <FormField
               control={form.control}
               name="title"
