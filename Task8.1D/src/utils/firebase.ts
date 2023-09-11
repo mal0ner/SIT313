@@ -14,7 +14,16 @@ import {
   signOut,
 } from 'firebase/auth';
 
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  setDoc,
+  limit,
+  query,
+} from 'firebase/firestore';
 import { getCustomAvatarURL } from '@/utils/avatars';
 
 const firebaseConfig = {
@@ -30,6 +39,24 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
+
+type Experience = {
+  type: string;
+  years: number;
+};
+
+export type Post = {
+  jobType: 'employment' | 'freelance';
+  userId: string;
+  title: string;
+  business: string;
+  description: string;
+  projectLength: string;
+  paymentMin: number;
+  paymentMax: number;
+  workingHours: number;
+  experience: Experience[] | null;
+};
 
 export const auth = getAuth();
 export const db = getFirestore(app);
@@ -83,6 +110,42 @@ export async function signOutCurrentUser() {
   await signOut(auth);
 }
 
+// const postConverter = {
+//   toFirestore: (post: Post) => {
+//     return {
+//       jobtype: post.jobType,
+//       userId: post.userId,
+//       title: post.title,
+//       business: post.business,
+//       description: post.description,
+//       projectLength: post.projectLength,
+//       paymentMin: post.paymentMin,
+//       workingHours: post.workingHours,
+//       // experience: post.experience,
+//     };
+//   },
+//   fromFirestore: (snapshot: any, options: any) => {
+//     const data: Post = snapshot.data(options);
+//     return data;
+//   },
+// };
+
+export async function getPosts() {
+  // const querySnapshot = collection(db, 'posts');
+  // const q = query(docRef);
+  const postsQuery = query(collection(db, 'posts'), limit(20));
+  const snapshot = await getDocs(postsQuery);
+  // const querySnapShot = await getDocs(collection(db, 'posts'));
+  const data: Post[] = [];
+  snapshot.forEach((doc) => {
+    data.push(doc.data() as Post);
+  });
+  //
+  // q.forEach((doc) => {
+  //   data.push(doc.data() as Post);
+  // });
+  return data;
+}
 export async function createUserDocFromAuth(userAuth: User, name: string) {
   const userDocRef = doc(db, 'users', userAuth.uid);
   const userSnapShot = await getDoc(userDocRef);
