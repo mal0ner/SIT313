@@ -4,11 +4,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
-import ErrorPage from '@/pages/ErrorPage';
 import HomePage from '@/pages/HomePage';
-import NewJobPage from '@/pages/NewJobPage';
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
+import NewJobPage from '@/pages/NewJobPage';
+import JobsPage from '@/pages/JobsPage';
+import ErrorPage from '@/pages/ErrorPage';
 
 import FreelanceForm from '@/components/FreelanceForm';
 import EmploymentForm from '@/components/EmploymentForm';
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             element: <EmploymentForm />,
           },
         ],
+      },
+      {
+        path: 'jobs/',
+        element: <JobsPage />,
       },
     ],
   },

@@ -55,14 +55,14 @@ function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
+              {/* TODO: Add ShadCN/UI altert dialog element here to trigger when there is no user logged in  */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Find Jobs</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-1 p-3 md:w-[150px] lg:w-[200px]">
-                    <ListItem href="#" title="New Post"></ListItem>
-                    <ListItem href="#" title="All Posts"></ListItem>
-                  </ul>
-                </NavigationMenuContent>
+                <NavigationMenuLink
+                  href="#"
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link to={'/jobs'}>Find Jobs</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               {currentUser ? (

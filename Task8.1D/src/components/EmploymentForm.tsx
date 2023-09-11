@@ -45,6 +45,7 @@ function FreelanceForm() {
     defaultValues: {
       jobtype: 'employment',
       title: '',
+      description: '',
       skills: '',
       projectLength: '',
       paymentMin: 0,
