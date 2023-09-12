@@ -6,23 +6,34 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+
+import { Info, Loader2 } from 'lucide-react';
+
 function JobsPage() {
   const [data, setData] = useState<Post[] | []>([]);
   const [filter, setFilter] = useState<string>('');
-  const [query, setQuery] = useState<string[]>([]);
+  const [query, setQuery] = useState<Set<string>>(new Set());
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function handleFilterChange() {
     const searchItems = filter.split(',');
     searchItems.forEach((s, idx) => {
       searchItems[idx] = s.trim().toLowerCase();
     });
-    setQuery(searchItems);
+    setQuery(new Set(searchItems));
   }
 
   useEffect(() => {
     async function getData() {
+      setIsLoading(true);
       const posts = await getPosts();
       setData(posts);
+      setIsLoading(false);
     }
     getData();
   }, []);
@@ -41,22 +52,57 @@ function JobsPage() {
         </p>
       </div>
       <Separator />
-      <div className="flex flex-col gap-3 p-6 md:p-12">
-        <p className="font-bold">Search</p>
-        <Input
-          type="search"
-          placeholder="Angular, Javascript, Typescript"
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <Button onClick={handleFilterChange}>Apply</Button>
+      <div className="flex flex-col w-full gap-3 p-6 md:p-12">
+        <p className="font-bold text-lg font-yeseva">Filter</p>
+        <div className="flex flex-col gap-5 w-full max-w-prose">
+          <div className="flex gap-3 items-center w-full max-w-prose">
+            <p className="font-bold w-20">Title:</p>
+            <Input
+              type="search"
+              placeholder="Senior Software Engineer"
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-3 items-center w-full max-w-prose">
+            <p className="font-bold w-20">Skills:</p>
+            <Input
+              type="search"
+              placeholder="C++, Javascript, Angular, React"
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-3 items-center w-full max-w-prose">
+            <Button className="w-1/2" onClick={handleFilterChange}>
+              {isLoading && <Loader2 className="animate-spin" />}
+              {!isLoading && 'Apply'}
+            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button>
+                  <Info />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72">
+                <p>Filters should be a comma-separated list of values</p>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
         <p>{query}</p>
       </div>
       <div className="w-full flex items-center mt-12 mb-12">
-        <div className="flex flex-col gap-5 items-center w-full">
-          {data.map((post: Post, index) => (
-            <PostCard key={index} {...post} />
-          ))}
-        </div>
+        {isLoading && (
+          <div className="grid place-items-center h-full w-full">
+            <Loader2 className="animate-spin" />
+          </div>
+        )}
+        {!isLoading && (
+          <div className="flex flex-col gap-5 items-center w-full">
+            {data.map((post: Post, index) => (
+              <PostCard key={index} {...post} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
