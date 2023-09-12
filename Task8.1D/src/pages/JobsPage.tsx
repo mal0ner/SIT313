@@ -52,7 +52,7 @@ function JobsPage() {
         </p>
       </div>
       <Separator />
-      <div className="flex flex-col w-full gap-3 p-6 md:p-12">
+      <div className="flex flex-col items-center w-full gap-3 p-6 md:p-12">
         <p className="font-bold text-lg font-yeseva">Filter</p>
         <div className="flex flex-col gap-5 w-full max-w-prose">
           <div className="flex gap-3 items-center w-full max-w-prose">
@@ -71,7 +71,7 @@ function JobsPage() {
               onChange={(e) => setFilter(e.target.value)}
             />
           </div>
-          <div className="flex gap-3 items-center w-full max-w-prose">
+          <div className="flex gap-3 items-center justify-center w-full max-w-prose">
             <Button className="w-1/2" onClick={handleFilterChange}>
               {isLoading && <Loader2 className="animate-spin" />}
               {!isLoading && 'Apply'}

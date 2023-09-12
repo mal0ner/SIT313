@@ -57,12 +57,14 @@ function Navbar() {
 
               {/* TODO: Add ShadCN/UI altert dialog element here to trigger when there is no user logged in  */}
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="#"
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link to={'/jobs'}>Find Jobs</Link>
-                </NavigationMenuLink>
+                <Link to={'/jobs'}>
+                  <NavigationMenuLink
+                    href="/jobs"
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    Find Jobs
+                  </NavigationMenuLink>
+                </Link>
               </NavigationMenuItem>
 
               {currentUser ? (
@@ -111,21 +113,23 @@ function Navbar() {
               ) : (
                 <div className="flex">
                   <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="#"
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      <Link to={'/login'}>Login</Link>
-                    </NavigationMenuLink>
+                    <Link to={'/login'}>
+                      <NavigationMenuLink
+                        className={navigationMenuTriggerStyle()}
+                      >
+                        Login
+                      </NavigationMenuLink>
+                    </Link>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="#"
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      <Link to={'/signup'}>Create Account</Link>
-                    </NavigationMenuLink>
+                    <Link to={'/signup'}>
+                      <NavigationMenuLink
+                        className={navigationMenuTriggerStyle()}
+                      >
+                        Create Account
+                      </NavigationMenuLink>
+                    </Link>
                   </NavigationMenuItem>
                 </div>
               )}

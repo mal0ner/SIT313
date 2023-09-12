@@ -123,6 +123,16 @@ function ProfileCard(props: Post) {
               </div>
               <p className="font-bold">Description</p>
               <p className="text-slate-800">{props.description}</p>
+              {props.skills && (
+                <div>
+                  <p className="font-bold">Skills</p>
+                  <ul className="grid grid-cols-3 w-fit gap-x-12 gap-y-1 text-slate-800 marker:text-slate-600 list-disc list-inside">
+                    {props.skills.map((skill) => (
+                      <li>{skill}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <p className="font-bold">Experience</p>
               <div className="flex gap-5 flex-wrap text-slate-800">
                 {props.experience
@@ -163,6 +173,7 @@ function ProfileCard(props: Post) {
                   <TooltipTrigger asChild>
                     <Button variant="outline">
                       <Heart size={18} />
+                      {/*TODO: Remove this lol*/}
                       <p className="ml-3 text-xs text-slate-400">742</p>
                     </Button>
                   </TooltipTrigger>

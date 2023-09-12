@@ -24,6 +24,7 @@ import {
   limit,
   query,
   Timestamp,
+  addDoc,
 } from 'firebase/firestore';
 import { getCustomAvatarURL } from '@/utils/avatars';
 
@@ -48,19 +49,20 @@ export type UserDoc = {
   photoURL: string;
 };
 
-type Experience = {
+export type Experience = {
   type: string;
   years: number;
 };
 
 export type Post = {
-  jobType: 'employment' | 'freelance';
   userId: string;
   userRole: string;
-  createdDate: Timestamp;
+  jobType: 'employment' | 'freelance';
   title: string;
   business: string;
   description: string;
+  skills: string[];
+  createdDate: Timestamp;
   projectLength: string;
   paymentMin: number;
   paymentMax: number;
@@ -170,4 +172,9 @@ export async function createUserDocFromAuth(userAuth: User, name: string) {
   }
 
   return userDocRef;
+}
+
+export async function createPost(formValues: Post) {
+  const postsRef = collection(db, 'posts');
+  await addDoc(postsRef, formValues);
 }

@@ -16,24 +16,38 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 
+import { Timestamp } from 'firebase/firestore';
+import { auth, createPost, Post } from '@/utils/firebase';
+
 //TODO: Ensure MAX Pay is > MIN pay
 //coerce allows for string input to be autocast to number
-const formSchema = z.object({
-  jobtype: z.string(),
-  title: z
-    .string()
-    .min(3, { message: 'Must be more than 3 characters' })
-    .max(40, { message: 'Cannot be more than 40 characters' }),
-  userRole: z.string(),
-  description: z.string().min(10).max(200),
-  skills: z.string().min(5).max(100),
-  projectLength: z.string().min(1).max(15),
-  paymentMin: z.coerce.number().gt(0),
-  paymentMax: z.coerce.number().gt(0),
-  workingHours: z.coerce.number().gt(0).lt(100),
-});
+const formSchema = z
+  .object({
+    jobtype: z.string(),
+    title: z
+      .string()
+      .min(3, { message: 'Must be more than 3 characters' })
+      .max(40, { message: 'Cannot be more than 40 characters' }),
+    userRole: z.string(),
+    business: z.string().min(1, { message: 'Must not be empty' }).max(50),
+    description: z.string().min(10).max(200),
+    skills: z.string().min(5).max(100),
+    projectLength: z.string().min(1).max(15),
+    paymentMin: z.coerce.number().gt(0),
+    paymentMax: z.coerce.number().gt(0),
+    workingHours: z.coerce.number().gt(0).lt(100),
+    createdDate: z.custom<Timestamp>(),
+  })
+  .refine((data) => data.paymentMin <= data.paymentMax, {
+    path: ['paymentMin'],
+    message: 'Minimum payment must be equal to or smaller than maximum',
+  })
+  .refine((data) => data.paymentMin <= data.paymentMax, {
+    path: ['paymentMax'],
+    message: 'Maximum payment must be equal to or greater than minimum',
+  });
 
-//TODO: Add missing fields from db and firebase Post type to schema
+//DONE: Add missing fields from db and firebase Post type to schema
 function FreelanceForm() {
   // define our form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +55,7 @@ function FreelanceForm() {
     defaultValues: {
       jobtype: 'freelance',
       title: '',
+      business: '',
       userRole: '',
       description: '',
       skills: '',
@@ -48,13 +63,35 @@ function FreelanceForm() {
       paymentMin: 0,
       paymentMax: 0,
       workingHours: 0,
+      createdDate: Timestamp.now(),
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // This will be DB connection eventually
-    console.log(values);
+    // console.log(values);
+    // HACK: Surely there is a better way, I don't even let users onto this page without
+    // signing in
+    if (!auth.currentUser) {
+      return;
+    }
+    const post: Post = {
+      userId: auth.currentUser.uid,
+      userRole: values.userRole,
+      jobType: 'employment',
+      title: values.title,
+      business: values.business,
+      description: values.description,
+      skills: values.skills.split(','),
+      projectLength: values.projectLength,
+      paymentMin: values.paymentMin,
+      paymentMax: values.paymentMax,
+      workingHours: values.workingHours,
+      experience: null,
+      createdDate: Timestamp.now(),
+    };
+    await createPost(post);
   }
 
   return (

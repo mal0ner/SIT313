@@ -16,28 +16,41 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Minus } from 'lucide-react';
+import { Timestamp } from 'firebase/firestore';
+import { Experience, Post, auth, createPost } from '@/utils/firebase';
 
 //coerce allows for string input to be autocast to number
-const formSchema = z.object({
-  jobtype: z.string(),
-  title: z
-    .string()
-    .min(3, { message: 'Must be more than 3 characters' })
-    .max(40, { message: 'Cannot be more than 40 characters' }),
-  userRole: z.string(),
-  description: z.string().min(10).max(200),
-  skills: z.string().min(5).max(100),
-  projectLength: z.string().min(1).max(15),
-  paymentMin: z.coerce.number().gt(0),
-  paymentMax: z.coerce.number().gt(0),
-  workingHours: z.coerce.number().gt(0).lt(100),
-  experience: z.array(
-    z.object({
-      type: z.string().min(1, { message: 'Must not be empty' }),
-      years: z.string().min(1, { message: 'Must not be empty' }),
-    }),
-  ),
-});
+const formSchema = z
+  .object({
+    jobtype: z.string(),
+    title: z
+      .string()
+      .min(3, { message: 'Must be more than 3 characters' })
+      .max(40, { message: 'Cannot be more than 40 characters' }),
+    business: z.string().min(1, { message: 'Must not be empty' }).max(50),
+    userRole: z.string(),
+    description: z.string().min(10).max(200),
+    skills: z.string().min(5).max(100),
+    projectLength: z.string().min(1).max(15),
+    paymentMin: z.coerce.number().gt(0),
+    paymentMax: z.coerce.number().gt(0),
+    workingHours: z.coerce.number().gt(0).lt(100),
+    experience: z.array(
+      z.object({
+        type: z.string().min(1, { message: 'Must not be empty' }),
+        years: z.coerce.number().gt(0, { message: 'Must not be empty' }),
+      }),
+    ),
+    createdDate: z.custom<Timestamp>(),
+  })
+  .refine((data) => data.paymentMin <= data.paymentMax, {
+    path: ['paymentMin'],
+    message: 'Minimum payment must be equal to or smaller than maximum',
+  })
+  .refine((data) => data.paymentMin <= data.paymentMax, {
+    path: ['paymentMax'],
+    message: 'Maximum payment must be equal to or greater than minimum',
+  });
 
 //TODO: Add missing fields from db and firebase Post type to schema
 function FreelanceForm() {
@@ -47,6 +60,7 @@ function FreelanceForm() {
     defaultValues: {
       jobtype: 'employment',
       title: '',
+      business: '',
       userRole: '',
       description: '',
       skills: '',
@@ -57,16 +71,36 @@ function FreelanceForm() {
       experience: [
         {
           type: '',
-          years: '',
+          years: 0,
         },
       ],
+      createdDate: Timestamp.now(),
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // This will be DB connection eventually
-    console.log(values);
+    if (!auth.currentUser) {
+      return;
+    }
+    const post: Post = {
+      userId: auth.currentUser.uid,
+      userRole: values.userRole,
+      jobType: 'employment',
+      title: values.title,
+      business: values.business,
+      description: values.description,
+      skills: values.skills.split(','),
+      projectLength: values.projectLength,
+      paymentMin: values.paymentMin,
+      paymentMax: values.paymentMax,
+      workingHours: values.workingHours,
+      experience: values.experience as Experience[],
+      createdDate: Timestamp.now(),
+    };
+    console.log('got here submit');
+    await createPost(post);
   }
 
   const { fields, append, remove } = useFieldArray({
@@ -95,6 +129,21 @@ function FreelanceForm() {
                   <FormDescription>
                     The full role title for the position
                   </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="business"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Business</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Willow Tech Consulting" {...field} />
+                  </FormControl>
+                  <FormDescription>Company name</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -132,6 +181,27 @@ function FreelanceForm() {
                   <FormDescription>
                     Comma separated list of skills. Be specific, developers will
                     largely decide to apply based on what you provide here...
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Separator />
+            <h2 className="text-2xl font-yeseva">Your information</h2>
+
+            <FormField
+              control={form.control}
+              name="userRole"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Your Role</FormLabel>
+                  <FormControl>
+                    <Input placeholder="HR Manager" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    As the point of contact, what position do you hold at the
+                    company?
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -203,12 +273,13 @@ function FreelanceForm() {
               )}
             />
 
+            <h2 className="text-2xl font-yeseva">Experience</h2>
+
             <div className="flex flex-col gap-3">
               {fields.map((field, index) => (
-                <div className="flex gap-3">
+                <div className="flex gap-3" key={field.id}>
                   <FormField
                     control={form.control}
-                    key={field.id}
                     name={`experience.${index}.type`}
                     render={({ field }) => (
                       <FormItem>
@@ -226,7 +297,6 @@ function FreelanceForm() {
                   />
                   <FormField
                     control={form.control}
-                    key={field.id}
                     name={`experience.${index}.years`}
                     render={({ field }) => (
                       <FormItem>
@@ -249,7 +319,7 @@ function FreelanceForm() {
                 type="button"
                 variant="outline"
                 size="icon"
-                onClick={() => append({ type: '', years: '' })}
+                onClick={() => append({ type: '', years: 0 })}
               >
                 <Plus className="h-4 w-4" />
               </Button>
