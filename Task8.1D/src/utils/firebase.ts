@@ -23,6 +23,7 @@ import {
   setDoc,
   limit,
   query,
+  Timestamp,
 } from 'firebase/firestore';
 import { getCustomAvatarURL } from '@/utils/avatars';
 
@@ -40,6 +41,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
+export type UserDoc = {
+  createdAt: Timestamp;
+  displayName: string;
+  email: string;
+  photoURL: string;
+};
+
 type Experience = {
   type: string;
   years: number;
@@ -48,6 +56,7 @@ type Experience = {
 export type Post = {
   jobType: 'employment' | 'freelance';
   userId: string;
+  createdDate: Timestamp;
   title: string;
   business: string;
   description: string;
@@ -89,6 +98,7 @@ export async function handleUserSignupEmailPassword(
     throw error;
   }
 }
+
 export async function createAuthUserWithEmailAndPassword(
   email: string,
   password: string,
@@ -110,26 +120,6 @@ export async function signOutCurrentUser() {
   await signOut(auth);
 }
 
-// const postConverter = {
-//   toFirestore: (post: Post) => {
-//     return {
-//       jobtype: post.jobType,
-//       userId: post.userId,
-//       title: post.title,
-//       business: post.business,
-//       description: post.description,
-//       projectLength: post.projectLength,
-//       paymentMin: post.paymentMin,
-//       workingHours: post.workingHours,
-//       // experience: post.experience,
-//     };
-//   },
-//   fromFirestore: (snapshot: any, options: any) => {
-//     const data: Post = snapshot.data(options);
-//     return data;
-//   },
-// };
-
 export async function getPosts() {
   // const querySnapshot = collection(db, 'posts');
   // const q = query(docRef);
@@ -146,17 +136,30 @@ export async function getPosts() {
   // });
   return data;
 }
+
+export async function getUserData(userUID: string) {
+  const userDocRef = doc(db, 'users', userUID);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    return userSnapshot.data() as UserDoc;
+  }
+  return null;
+}
+
 export async function createUserDocFromAuth(userAuth: User, name: string) {
   const userDocRef = doc(db, 'users', userAuth.uid);
   const userSnapShot = await getDoc(userDocRef);
 
+  // only create if the document does not exist
   if (!userSnapShot.exists()) {
     const { email } = userAuth;
     const createdAt = new Date();
     const displayName = name;
+    const photoURL = userAuth.photoURL;
 
     try {
-      await setDoc(userDocRef, { displayName, email, createdAt });
+      await setDoc(userDocRef, { displayName, email, createdAt, photoURL });
     } catch (error: any) {
       console.log(
         'error in creating user document in firestore database',
