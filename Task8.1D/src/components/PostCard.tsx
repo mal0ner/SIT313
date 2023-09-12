@@ -59,7 +59,7 @@ function ProfileCard(props: Post) {
         <div className="flex flex-col w-full">
           <div className="flex items-center w-full gap-3">
             <div className="flex flex-col justify-between p-1 md:p-3 w-full gap-3">
-              <div className="flex justify-between border border-slate-200 p-1 items-center w-full rounded-md">
+              <div className="flex justify-between border border-slate-200 p-1 items-center w-full rounded-md bg-sky-200">
                 <p className="font-bold text-sm sm:text-md md:text-l lg:text-xl w-fit p-1 rounded-md">
                   {props.title}
                 </p>
@@ -71,7 +71,7 @@ function ProfileCard(props: Post) {
                 </CollapsibleTrigger>
               </div>
               <p className="text-slate-400 text-xs sm:text-sm md:text-md italic">
-                @{props.business}
+                {props.business}
               </p>
             </div>
           </div>
@@ -105,6 +105,22 @@ function ProfileCard(props: Post) {
         <CollapsibleContent className="w-full">
           <div className="flex flex-col gap-3 p-1 md:p-3 text-xs sm:text-sm md:text-md lg:text-lg text-justify">
             <div className="flex flex-col gap-3">
+              <div>
+                {posterData && (
+                  <div className="flex gap-3 p-2 rounded w-fit border border-slate-200">
+                    <img src={posterData?.photoURL} width={40} />
+                    <div className="flex flex-col justify-center items-start text-xs sm:text-sm md:text-md">
+                      <p className="font-semibold text-xs md:text-md">
+                        {posterData.displayName}
+                      </p>
+                      <p className="text-slate-500 text-xs">{props.userRole}</p>
+                    </div>
+                  </div>
+                )}
+                {!posterData && (
+                  <div className="text-red-400">User was deleted</div>
+                )}
+              </div>
               <p className="font-bold">Description</p>
               <p className="text-slate-800">{props.description}</p>
               <p className="font-bold">Experience</p>

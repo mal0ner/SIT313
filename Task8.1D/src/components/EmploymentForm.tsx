@@ -38,6 +38,7 @@ const formSchema = z.object({
   ),
 });
 
+//TODO: Add missing fields from db and firebase Post type to schema
 function FreelanceForm() {
   // define our form.
   const form = useForm<z.infer<typeof formSchema>>({

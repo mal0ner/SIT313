@@ -31,6 +31,7 @@ const formSchema = z.object({
   workingHours: z.coerce.number().gt(0).lt(100),
 });
 
+//TODO: Add missing fields from db and firebase Post type to schema
 function FreelanceForm() {
   // define our form.
   const form = useForm<z.infer<typeof formSchema>>({

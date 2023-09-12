@@ -56,6 +56,7 @@ type Experience = {
 export type Post = {
   jobType: 'employment' | 'freelance';
   userId: string;
+  userRole: string;
   createdDate: Timestamp;
   title: string;
   business: string;
