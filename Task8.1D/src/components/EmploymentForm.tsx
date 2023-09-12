@@ -24,6 +24,7 @@ const formSchema = z.object({
     .string()
     .min(3, { message: 'Must be more than 3 characters' })
     .max(40, { message: 'Cannot be more than 40 characters' }),
+  userRole: z.string(),
   description: z.string().min(10).max(200),
   skills: z.string().min(5).max(100),
   projectLength: z.string().min(1).max(15),
@@ -46,6 +47,7 @@ function FreelanceForm() {
     defaultValues: {
       jobtype: 'employment',
       title: '',
+      userRole: '',
       description: '',
       skills: '',
       projectLength: '',

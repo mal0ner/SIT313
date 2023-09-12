@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 
+//TODO: Ensure MAX Pay is > MIN pay
 //coerce allows for string input to be autocast to number
 const formSchema = z.object({
   jobtype: z.string(),
@@ -23,6 +24,7 @@ const formSchema = z.object({
     .string()
     .min(3, { message: 'Must be more than 3 characters' })
     .max(40, { message: 'Cannot be more than 40 characters' }),
+  userRole: z.string(),
   description: z.string().min(10).max(200),
   skills: z.string().min(5).max(100),
   projectLength: z.string().min(1).max(15),
@@ -39,6 +41,8 @@ function FreelanceForm() {
     defaultValues: {
       jobtype: 'freelance',
       title: '',
+      userRole: '',
+      description: '',
       skills: '',
       projectLength: '',
       paymentMin: 0,
