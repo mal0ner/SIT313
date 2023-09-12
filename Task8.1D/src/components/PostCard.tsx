@@ -1,4 +1,4 @@
-import { Post } from '@/utils/firebase';
+import { Post, UserDoc, getUserData } from '@/utils/firebase';
 
 import { Button } from '@/components/ui/button';
 
@@ -15,8 +15,17 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { useState } from 'react';
-import { ChevronDown, ChevronUp, Send, Heart, Trash } from 'lucide-react';
+import { formatDistance } from 'date-fns';
+
+import { useEffect, useState } from 'react';
+import {
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Send,
+  Heart,
+  Trash,
+} from 'lucide-react';
 
 function ProfileCard(props: Post) {
   function getExperienceColor(years: number) {
@@ -31,6 +40,15 @@ function ProfileCard(props: Post) {
     }
   }
   const [isOpen, setIsOpen] = useState(false);
+  const [posterData, setPosterData] = useState<UserDoc | null>(null);
+
+  useEffect(() => {
+    async function getPosterData() {
+      const userData = await getUserData(props.userId);
+      setPosterData(userData);
+    }
+    getPosterData();
+  }, []);
   return (
     <>
       <Collapsible
@@ -40,31 +58,36 @@ function ProfileCard(props: Post) {
       >
         <div className="flex flex-col w-full">
           <div className="flex items-center w-full gap-3">
-            <div className="flex justify-between p-1 md:p-3 w-full gap-3 items-center">
-              <div className="flex justify-between border border-slate-200 p-1 items-center bg-slate-100 w-full rounded-md">
+            <div className="flex flex-col justify-between p-1 md:p-3 w-full gap-3">
+              <div className="flex justify-between border border-slate-200 p-1 items-center w-full rounded-md">
                 <p className="font-bold text-sm sm:text-md md:text-l lg:text-xl w-fit p-1 rounded-md">
                   {props.title}
                 </p>
-                <p className="text-slate-400 text-xs sm:text-sm md:text-md italic">
-                  @{props.business}
-                </p>
+                <CollapsibleTrigger asChild>
+                  <Button variant="outline" size="sm" className="w-9 p-0">
+                    {isOpen && <ChevronUp />}
+                    {!isOpen && <ChevronDown />}
+                  </Button>
+                </CollapsibleTrigger>
               </div>
+              <p className="text-slate-400 text-xs sm:text-sm md:text-md italic">
+                @{props.business}
+              </p>
             </div>
-            <CollapsibleTrigger asChild>
-              <Button variant="outline" size="sm" className="w-9 p-0">
-                {isOpen && <ChevronUp />}
-                {!isOpen && <ChevronDown />}
-              </Button>
-            </CollapsibleTrigger>
           </div>
-          <div className="flex p-2 justify-between text-xs md:text-sm">
+          <div className="flex p-1 md:px-3 justify-between text-xs md:text-sm">
             <div className="flex gap-3 h-fit">
               <p className="rounded bg-slate-100 p-1 border border-slate-200 text-slate-500">
                 {props.jobType}{' '}
               </p>
-              <p className="rounded overflow-ellipsis whitespace-nowrap bg-slate-100 p-1 border border-slate-200 text-slate-500">
-                {props.projectLength}
-              </p>
+              <div className="flex gap-1 rounded bg-slate-100 p-1 items-center border border-slate-200 text-slate-500">
+                <Clock size={15} />
+                <p>
+                  {formatDistance(props.createdDate.toDate(), new Date(), {
+                    addSuffix: true,
+                  })}
+                </p>
+              </div>
             </div>
             <div className="flex gap-3">
               {!isOpen && props.experience
@@ -80,7 +103,7 @@ function ProfileCard(props: Post) {
           </div>
         </div>
         <CollapsibleContent className="w-full">
-          <div className="flex flex-col gap-3 p-3 text-xs sm:text-sm md:text-md lg:text-lg text-justify">
+          <div className="flex flex-col gap-3 p-1 md:p-3 text-xs sm:text-sm md:text-md lg:text-lg text-justify">
             <div className="flex flex-col gap-3">
               <p className="font-bold">Description</p>
               <p className="text-slate-800">{props.description}</p>
