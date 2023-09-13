@@ -1,4 +1,12 @@
-import { Post, UserDoc, getUserData } from '@/utils/firebase';
+import {
+  Post,
+  UserDoc,
+  auth,
+  checkIsPostLiked,
+  getUserData,
+  likePost,
+  unlikePost,
+} from '@/utils/firebase';
 
 import { Button } from '@/components/ui/button';
 
@@ -33,8 +41,10 @@ type PostCardProps = {
 };
 
 function PostCard(props: PostCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [posterData, setPosterData] = useState<UserDoc | null>(null);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(props.post.likes);
 
   function getExperienceColor(years: number) {
     if (years < 3) {
@@ -48,9 +58,25 @@ function PostCard(props: PostCardProps) {
     }
   }
 
+  async function handleLike() {
+    if (isLiked && auth.currentUser) {
+      setLikes(likes - 1);
+      await unlikePost(auth.currentUser, props.post.postId);
+    } else if (!isLiked && auth.currentUser) {
+      setLikes(likes + 1);
+      await likePost(auth.currentUser, props.post.postId);
+    }
+  }
+
   useEffect(() => {
     async function getPosterData() {
+      if (!auth.currentUser) return;
       const userData = await getUserData(props.post.userId);
+      const isPostLiked: boolean = await checkIsPostLiked(
+        auth.currentUser,
+        props.post.postId,
+      );
+      setIsLiked(isPostLiked);
       setPosterData(userData);
     }
     getPosterData();
@@ -179,10 +205,16 @@ function PostCard(props: PostCardProps) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline">
-                      <Heart size={18} />
-                      {/*TODO: Remove this lol*/}
-                      <p className="ml-3 text-xs text-slate-400">742</p>
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        setIsLiked(!isLiked);
+                        await handleLike();
+                      }}
+                    >
+                      {!isLiked && <Heart size={18} />}
+                      {isLiked && <Heart size={18} fill="#ff584d" />}
+                      <p className="ml-3 text-xs text-slate-400">{likes}</p>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>

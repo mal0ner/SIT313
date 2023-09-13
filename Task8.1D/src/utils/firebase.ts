@@ -25,6 +25,10 @@ import {
   query,
   Timestamp,
   addDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  increment,
 } from 'firebase/firestore';
 import { getCustomAvatarURL } from '@/utils/avatars';
 
@@ -47,6 +51,8 @@ export type UserDoc = {
   displayName: string;
   email: string;
   photoURL: string;
+  likedPosts: string[];
+  appliedPosts: string[];
 };
 
 export type Experience = {
@@ -69,6 +75,7 @@ export type Post = {
   paymentMax: number;
   workingHours: number;
   experience: Experience[] | null;
+  likes: number;
 };
 
 export const auth = getAuth();
@@ -125,11 +132,8 @@ export async function signOutCurrentUser() {
 }
 
 export async function getPosts() {
-  // const querySnapshot = collection(db, 'posts');
-  // const q = query(docRef);
   const postsQuery = query(collection(db, 'posts'), limit(20));
   const snapshot = await getDocs(postsQuery);
-  // const querySnapShot = await getDocs(collection(db, 'posts'));
   const data: Post[] = [];
   snapshot.forEach((doc) => {
     const post: Post = doc.data() as Post;
@@ -138,11 +142,30 @@ export async function getPosts() {
     post.postId = doc.id;
     data.push(post);
   });
-  //
-  // q.forEach((doc) => {
-  //   data.push(doc.data() as Post);
-  // });
   return data;
+}
+
+export async function likePost(userAuth: User, postId: string) {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const postRef = doc(db, 'posts', postId);
+
+  await updateDoc(userDocRef, {
+    likedPosts: arrayUnion(postId),
+  });
+  await updateDoc(postRef, {
+    likes: increment(1),
+  });
+}
+
+export async function unlikePost(userAuth: User, postId: string) {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const postRef = doc(db, 'posts', postId);
+  await updateDoc(userDocRef, {
+    likedPosts: arrayRemove(postId),
+  });
+  await updateDoc(postRef, {
+    likes: increment(-1),
+  });
 }
 
 export async function getUserData(userUID: string) {
@@ -155,23 +178,31 @@ export async function getUserData(userUID: string) {
   return null;
 }
 
+export async function checkIsPostLiked(userAuth: User, postId: string) {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+  const userData = userSnapshot.data() as UserDoc;
+  return userData.likedPosts.includes(postId);
+}
+
 export async function createUserDocFromAuth(userAuth: User, name: string) {
   const userDocRef = doc(db, 'users', userAuth.uid);
   const userSnapShot = await getDoc(userDocRef);
 
   // only create if the document does not exist
   if (!userSnapShot.exists()) {
-    const { email } = userAuth;
-    const createdAt = new Date();
-    const displayName = name;
-    const photoURL = userAuth.photoURL;
-
     try {
-      await setDoc(userDocRef, { displayName, email, createdAt, photoURL });
+      await setDoc(userDocRef, {
+        displayName: name,
+        email: userAuth.email,
+        createdAt: Timestamp.now(),
+        photoURL: userAuth.photoURL,
+        likedPosts: [],
+        appliedPosts: [],
+      });
     } catch (error: any) {
-      console.log(
-        'error in creating user document in firestore database',
-        error.message,
+      alert(
+        `Error in creating user document in firestore database, message: ${error.message}`,
       );
     }
   }

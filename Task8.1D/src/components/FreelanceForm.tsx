@@ -77,6 +77,7 @@ function FreelanceForm() {
       return;
     }
     const post: Post = {
+      postId: '',
       userId: auth.currentUser.uid,
       userRole: values.userRole,
       jobType: 'employment',
@@ -89,6 +90,7 @@ function FreelanceForm() {
       paymentMax: values.paymentMax,
       workingHours: values.workingHours,
       experience: null,
+      likes: 0,
       createdDate: Timestamp.now(),
     };
     await createPost(post);
