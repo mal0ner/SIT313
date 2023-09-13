@@ -15,10 +15,11 @@ import {
 import { Info, Loader2 } from 'lucide-react';
 
 function JobsPage() {
-  const [data, setData] = useState<Post[] | []>([]);
+  const [posts, setPosts] = useState<Post[] | []>([]);
   const [filter, setFilter] = useState<string>('');
   const [query, setQuery] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [deletedPosts, setDeletedPosts] = useState<string[]>([]);
 
   function handleFilterChange() {
     const searchItems = filter.split(',');
@@ -28,11 +29,15 @@ function JobsPage() {
     setQuery(new Set(searchItems));
   }
 
+  function hidePost(id: string) {
+    setDeletedPosts(deletedPosts.concat(id));
+  }
+
   useEffect(() => {
     async function getData() {
       setIsLoading(true);
       const posts = await getPosts();
-      setData(posts);
+      setPosts(posts);
       setIsLoading(false);
     }
     getData();
@@ -98,9 +103,11 @@ function JobsPage() {
         )}
         {!isLoading && (
           <div className="flex flex-col gap-5 items-center w-full">
-            {data.map((post: Post, index) => (
-              <PostCard key={index} {...post} />
-            ))}
+            {posts.map((post: Post, index) => {
+              if (!deletedPosts.includes(post.postId)) {
+                return <PostCard key={index} post={post} hide={hidePost} />;
+              }
+            })}
           </div>
         )}
       </div>

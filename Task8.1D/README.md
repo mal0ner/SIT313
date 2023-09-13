@@ -14,6 +14,7 @@ Cameron Malone 218344989
 - Loading Spinner in tailwind: https://www.braydoncoyer.dev/blog/how-to-create-an-animated-loading-spinner-with-tailwind-css
 - Events from child to parent React: https://stackoverflow.com/questions/74864178/how-do-i-emit-events-from-a-child-component-to-a-parent-component-in-react
 - Defining and using types for typesafety with Firebase and typescript: https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
+- Define type for function callback in object typescript: https://stackoverflow.com/questions/29689966/how-to-define-type-for-a-function-callback-as-any-function-type-not-universal
 
 ### Fixes
 
@@ -44,6 +45,20 @@ do this:
     </div>;
   ));
 }
+```
+
+**Type 'void' is not assignable to type '((event: MouseEvent<HTMLInputElement>)=>void) | undefined':**
+This occurred as html `onClick={}` attributes expect a function, not a function call. We can fix like so:
+
+```jsx
+function doSomething(input) {
+  return;
+}
+//wrong
+<Button onClick={doSomething(props.input)}>Click me...</Button>
+
+//right
+<Button onClick={() => doSomething(props.input)}>Click me...</Button>
 ```
 
 ### Libraries or tools

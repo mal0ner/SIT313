@@ -27,7 +27,15 @@ import {
   Trash,
 } from 'lucide-react';
 
-function ProfileCard(props: Post) {
+type PostCardProps = {
+  post: Post;
+  hide: (id: string) => void; // ../../README.md
+};
+
+function PostCard(props: PostCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [posterData, setPosterData] = useState<UserDoc | null>(null);
+
   function getExperienceColor(years: number) {
     if (years < 3) {
       return <p className="rounded bg-orange-100 p-1">{years} years</p>;
@@ -39,12 +47,10 @@ function ProfileCard(props: Post) {
       return <p className="rounded bg-orange-400 p-1">{years} years</p>;
     }
   }
-  const [isOpen, setIsOpen] = useState(false);
-  const [posterData, setPosterData] = useState<UserDoc | null>(null);
 
   useEffect(() => {
     async function getPosterData() {
-      const userData = await getUserData(props.userId);
+      const userData = await getUserData(props.post.userId);
       setPosterData(userData);
     }
     getPosterData();
@@ -61,7 +67,7 @@ function ProfileCard(props: Post) {
             <div className="flex flex-col justify-between p-1 md:p-3 w-full gap-3">
               <div className="flex justify-between border border-slate-200 p-1 items-center w-full rounded-md bg-sky-200">
                 <p className="font-bold text-sm sm:text-md md:text-l lg:text-xl w-fit p-1 rounded-md">
-                  {props.title}
+                  {props.post.title}
                 </p>
                 <CollapsibleTrigger asChild>
                   <Button variant="outline" size="sm" className="w-9 p-0">
@@ -71,27 +77,27 @@ function ProfileCard(props: Post) {
                 </CollapsibleTrigger>
               </div>
               <p className="text-slate-400 text-xs sm:text-sm md:text-md italic">
-                {props.business}
+                {props.post.business}
               </p>
             </div>
           </div>
           <div className="flex p-1 md:px-3 justify-between text-xs md:text-sm">
             <div className="flex gap-3 h-fit">
               <p className="rounded bg-slate-100 p-1 border border-slate-200 text-slate-500">
-                {props.jobType}{' '}
+                {props.post.jobType}{' '}
               </p>
               <div className="flex gap-1 rounded bg-slate-100 p-1 items-center border border-slate-200 text-slate-500">
                 <Clock size={15} />
                 <p>
-                  {formatDistance(props.createdDate.toDate(), new Date(), {
+                  {formatDistance(props.post.createdDate.toDate(), new Date(), {
                     addSuffix: true,
                   })}
                 </p>
               </div>
             </div>
             <div className="flex gap-3">
-              {!isOpen && props.experience
-                ? props.experience
+              {!isOpen && props.post.experience
+                ? props.post.experience
                     .slice(0, 1)
                     .map((experience) => (
                       <p className="rounded bg-slate-100 p-1 border border-slate-200 text-slate-500">
@@ -113,7 +119,9 @@ function ProfileCard(props: Post) {
                       <p className="font-semibold text-xs md:text-md">
                         {posterData.displayName}
                       </p>
-                      <p className="text-slate-500 text-xs">{props.userRole}</p>
+                      <p className="text-slate-500 text-xs">
+                        {props.post.userRole}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -122,12 +130,12 @@ function ProfileCard(props: Post) {
                 )}
               </div>
               <p className="font-bold">Description</p>
-              <p className="text-slate-800">{props.description}</p>
-              {props.skills && (
+              <p className="text-slate-800">{props.post.description}</p>
+              {props.post.skills && (
                 <div>
                   <p className="font-bold">Skills</p>
                   <ul className="grid grid-cols-3 w-fit gap-x-12 gap-y-1 text-slate-800 marker:text-slate-600 list-disc list-inside">
-                    {props.skills.map((skill) => (
+                    {props.post.skills.map((skill) => (
                       <li>{skill}</li>
                     ))}
                   </ul>
@@ -135,8 +143,8 @@ function ProfileCard(props: Post) {
               )}
               <p className="font-bold">Experience</p>
               <div className="flex gap-5 flex-wrap text-slate-800">
-                {props.experience
-                  ? props.experience.map((experience) => (
+                {props.post.experience
+                  ? props.post.experience.map((experience) => (
                       <div className="flex h-fit items-center border rounded border-slate-200">
                         <p className="h-fit p-1 pr-2 bg-slate-100">
                           {experience.type}
@@ -148,11 +156,11 @@ function ProfileCard(props: Post) {
               </div>
               <p className="font-bold">Remuneration</p>
               <p className="rounded bg-slate-100 text-slate-800 w-fit p-1 border border-slate-200">
-                ${props.paymentMin} - ${props.paymentMax}
+                ${props.post.paymentMin} - ${props.post.paymentMax}
               </p>
               <p className="font-bold">Hours</p>
               <p className="rounded bg-slate-100 text-slate-800 w-fit p-1 border border-slate-200">
-                {props.workingHours}
+                {props.post.workingHours}
               </p>
             </div>
             <div className="mt-12 flex gap-3 justify-end">
@@ -185,12 +193,15 @@ function ProfileCard(props: Post) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline">
+                    <Button
+                      variant="outline"
+                      onClick={() => props.hide(props.post.postId)}
+                    >
                       <Trash size={18} />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p className="mb-1">Delete this post</p>
+                    <p className="mb-1">Hide this post</p>
                     <p className="text-slate-400 italic">
                       This only removes the post from your personal view.
                     </p>
@@ -208,4 +219,4 @@ function ProfileCard(props: Post) {
   );
 }
 
-export default ProfileCard;
+export default PostCard;
