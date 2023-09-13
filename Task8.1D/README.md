@@ -13,6 +13,7 @@ Cameron Malone 218344989
 - Text search and pagination with firebase: https://medium.com/@ken11zer01/firebase-firestore-text-search-and-pagination-91a0df8131ef
 - Loading Spinner in tailwind: https://www.braydoncoyer.dev/blog/how-to-create-an-animated-loading-spinner-with-tailwind-css
 - Events from child to parent React: https://stackoverflow.com/questions/74864178/how-do-i-emit-events-from-a-child-component-to-a-parent-component-in-react
+- Defining and using types for typesafety with Firebase and typescript: https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
 
 ### Fixes
 
@@ -26,22 +27,22 @@ property on their containing element.
 instead of this:
 
 ```jsx
-  {arr.map((item) => {
+  {arr.map((item) => (
     <p key={item.id}>{item.field1}</p>
     <p key={item.id}>{item.field2}</p>
-  })}
+  ))}
 ```
 
 do this:
 
 ```jsx
 {
-  arr.map((item) => {
+  arr.map((item) => (
     <div key={item.id}>
       <p>{item.field1}</p>
       <p>{item.field2}</p>
     </div>;
-  });
+  ));
 }
 ```
 
