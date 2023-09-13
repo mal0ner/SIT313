@@ -55,6 +55,7 @@ export type Experience = {
 };
 
 export type Post = {
+  postId: string;
   userId: string;
   userRole: string;
   jobType: 'employment' | 'freelance';
@@ -131,7 +132,11 @@ export async function getPosts() {
   // const querySnapShot = await getDocs(collection(db, 'posts'));
   const data: Post[] = [];
   snapshot.forEach((doc) => {
-    data.push(doc.data() as Post);
+    const post: Post = doc.data() as Post;
+    // this should allow for us to 'skip' over incoming posts whose id matches a list of 'deleted'
+    // posts by the user
+    post.postId = doc.id;
+    data.push(post);
   });
   //
   // q.forEach((doc) => {
