@@ -63,4 +63,4 @@ function doSomething(input) {
 
 ### Libraries or tools
 
-**Date-fns**: Comprehensive and simple toolset for manipulating js dates. source: https://date-fns.org/
+`date-fns`: Comprehensive and simple toolset for manipulating js dates. source: https://date-fns.org/
