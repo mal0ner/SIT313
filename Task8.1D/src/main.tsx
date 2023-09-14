@@ -25,10 +25,6 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: 'find-dev',
-        element: <FreelanceForm />,
-      },
-      {
         path: 'find/',
         element: <NewJobPage />,
         children: [
