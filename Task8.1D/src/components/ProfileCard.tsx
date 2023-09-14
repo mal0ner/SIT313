@@ -46,10 +46,23 @@ function ProfileCard(props: CustomerProfile | DeveloperProfile) {
             {props.fullName}
           </CardTitle>
           <CardDescription className="text-xs md:text-md text-center">
-            {'language' in props && <div>{props.language} Developer</div>}
-            {'jobTitle' in props && <div>{props.jobTitle}</div>}
+            {'language' in props && (
+              <span>
+                {props.language} Developer
+                <br />
+              </span>
+            )}
+            {'jobTitle' in props && (
+              <span>
+                {props.jobTitle}
+                <br />
+              </span>
+            )}
             {'company' in props && (
-              <div className="font-bold">{props.company}</div>
+              <span className="font-bold">
+                {props.company}
+                <br />
+              </span>
             )}
           </CardDescription>
         </CardHeader>
