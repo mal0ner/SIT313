@@ -20,6 +20,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
+import { ArrowLeft } from 'lucide-react';
+
 const loginSchema = z
   .object({
     email: z.string().email(),
@@ -71,8 +73,15 @@ export default function Login() {
   return (
     <>
       <div className="m-10 flex flex-col gap-10 items-center justify-center w-1/2">
-        <div className="text-center flex flex-col gap-2">
-          <h1 className="text-4xl font-yeseva">
+        <div className="text-center flex gap-2">
+          <Button
+            onClick={() => navigate('/')}
+            variant={'ghost'}
+            className="w-fit"
+          >
+            <ArrowLeft />
+          </Button>
+          <h1 className="text-2xl md:text-4xl font-yeseva">
             Sign in to DevLink Marketplace!
           </h1>
         </div>
