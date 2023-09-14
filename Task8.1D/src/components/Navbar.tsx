@@ -57,13 +57,8 @@ function Navbar() {
 
               {/* TODO: Add ShadCN/UI altert dialog element here to trigger when there is no user logged in  */}
               <NavigationMenuItem>
-                <Link to={'/jobs'}>
-                  <NavigationMenuLink
-                    href="/jobs"
-                    className={navigationMenuTriggerStyle()}
-                  >
-                    Find Jobs
-                  </NavigationMenuLink>
+                <Link to={'/jobs'} className={navigationMenuTriggerStyle()}>
+                  Find Jobs
                 </Link>
               </NavigationMenuItem>
 
@@ -113,22 +108,20 @@ function Navbar() {
               ) : (
                 <div className="flex">
                   <NavigationMenuItem>
-                    <Link to={'/login'}>
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}
-                      >
-                        Login
-                      </NavigationMenuLink>
+                    <Link
+                      to={'/login'}
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Login
                     </Link>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <Link to={'/signup'}>
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}
-                      >
-                        Create Account
-                      </NavigationMenuLink>
+                    <Link
+                      to={'/signup'}
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Create Account
                     </Link>
                   </NavigationMenuItem>
                 </div>
