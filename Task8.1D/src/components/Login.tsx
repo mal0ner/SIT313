@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
@@ -72,7 +72,9 @@ export default function Login() {
     <>
       <div className="m-10 flex flex-col gap-10 items-center justify-center w-1/2">
         <div className="text-center flex flex-col gap-2">
-          <h1 className="text-4xl font-yeseva">Welcome back!</h1>
+          <h1 className="text-4xl font-yeseva">
+            Sign in to DevLink Marketplace!
+          </h1>
         </div>
         <Form {...loginForm}>
           <form
@@ -127,6 +129,12 @@ export default function Login() {
             <Button className="w-1/2 place-self-center" type="submit">
               Login
             </Button>
+            <div className="place-self-center text-center">
+              Don't have an account?{' '}
+              <Link to={'/signup'} className="text-sky-500 underline">
+                Signup
+              </Link>
+            </div>
           </form>
         </Form>
       </div>
