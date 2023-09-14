@@ -1,6 +1,16 @@
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { auth } from '@/utils/firebase';
 
 function NewJobPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    function checkUserAuth() {
+      if (!auth.currentUser) navigate('/login');
+    }
+    checkUserAuth();
+  }, []);
   return (
     <div className="flex flex-col gap-6 m-6 mt-20 mb-20">
       <section className="max-w-prose">

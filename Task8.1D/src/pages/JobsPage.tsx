@@ -1,4 +1,4 @@
-import { Post, getPosts } from '@/utils/firebase';
+import { Post, auth, getPosts } from '@/utils/firebase';
 import { useEffect, useState } from 'react';
 import PostCard from '@/components/PostCard';
 
@@ -13,8 +13,10 @@ import {
 } from '@/components/ui/popover';
 
 import { Info, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function JobsPage() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[] | []>([]);
   const [filter, setFilter] = useState<string>('');
   const [query, setQuery] = useState<Set<string>>(new Set());
@@ -35,6 +37,7 @@ function JobsPage() {
 
   useEffect(() => {
     async function getData() {
+      if (!auth.currentUser) navigate('/login');
       setIsLoading(true);
       const posts = await getPosts();
       setPosts(posts);

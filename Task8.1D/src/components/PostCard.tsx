@@ -123,13 +123,14 @@ function PostCard(props: PostCardProps) {
             </div>
             <div className="flex gap-3">
               {!isOpen && props.post.experience
-                ? props.post.experience
-                    .slice(0, 1)
-                    .map((experience) => (
-                      <p className="rounded bg-slate-100 p-1 border border-slate-200 text-slate-500">
-                        {experience.type}
-                      </p>
-                    ))
+                ? props.post.experience.slice(0, 1).map((experience) => (
+                    <p
+                      key={experience.type}
+                      className="rounded bg-slate-100 p-1 border border-slate-200 text-slate-500"
+                    >
+                      {experience.type}
+                    </p>
+                  ))
                 : null}
             </div>
           </div>
@@ -162,7 +163,7 @@ function PostCard(props: PostCardProps) {
                   <p className="font-bold">Skills</p>
                   <ul className="grid grid-cols-3 w-fit gap-x-12 gap-y-1 text-slate-800 marker:text-slate-600 list-disc list-inside">
                     {props.post.skills.map((skill) => (
-                      <li>{skill}</li>
+                      <li key={skill.length}>{skill}</li>
                     ))}
                   </ul>
                 </div>
@@ -171,7 +172,10 @@ function PostCard(props: PostCardProps) {
               <div className="flex gap-5 flex-wrap text-slate-800">
                 {props.post.experience
                   ? props.post.experience.map((experience) => (
-                      <div className="flex h-fit items-center border rounded border-slate-200">
+                      <div
+                        key={experience.type}
+                        className="flex h-fit items-center border rounded border-slate-200"
+                      >
                         <p className="h-fit p-1 pr-2 bg-slate-100">
                           {experience.type}
                         </p>
