@@ -193,7 +193,7 @@ function PostCard(props: PostCardProps) {
               {props.post.skills && (
                 <div>
                   <p className="font-bold">Skills</p>
-                  <ul className="grid grid-cols-3 w-fit gap-x-12 gap-y-1 text-slate-800 marker:text-slate-600 list-disc list-inside">
+                  <ul className="grid auto-cols-auto w-fit gap-x-12 gap-y-1 text-slate-800 marker:text-slate-600 list-disc list-inside">
                     {props.post.skills.map((skill) => (
                       <li key={skill.length}>{skill}</li>
                     ))}
