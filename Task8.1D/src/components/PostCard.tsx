@@ -163,6 +163,13 @@ function PostCard(props: PostCardProps) {
         <CollapsibleContent className="w-full">
           <div className="flex flex-col gap-3 p-1 md:p-3 text-xs sm:text-sm md:text-md lg:text-lg text-justify">
             <div className="flex flex-col gap-3">
+              {props.post.imageURL ? (
+                <img
+                  src={props.post.imageURL}
+                  alt="an image for the job post"
+                  className="object-contain rounded-xl"
+                />
+              ) : null}
               <div>
                 {posterData && (
                   <div className="flex gap-3 p-2 rounded w-fit border border-slate-200">

@@ -17,7 +17,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 
 import { Timestamp } from 'firebase/firestore';
-import { auth, createPost, Post } from '@/utils/firebase';
+import { auth, createPost, Post, uploadImageReturnURL } from '@/utils/firebase';
+import { useState } from 'react';
 
 //TODO: Ensure MAX Pay is > MIN pay
 //coerce allows for string input to be autocast to number
@@ -49,6 +50,7 @@ const formSchema = z
 
 //DONE: Add missing fields from db and firebase Post type to schema
 function FreelanceForm() {
+  const [imageList, setImageList] = useState<FileList | null>(null);
   // define our form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,6 +78,9 @@ function FreelanceForm() {
     if (!auth.currentUser) {
       return;
     }
+
+    const imageURL: string | null = await uploadImageReturnURL(imageList);
+
     const post: Post = {
       postId: '',
       userId: auth.currentUser.uid,
@@ -93,9 +98,10 @@ function FreelanceForm() {
       experienceTypes: [],
       likes: 0,
       applicants: [],
+      imageURL: imageURL ?? null,
       createdDate: Timestamp.now(),
     };
-    await createPost(post);
+    await createPost(auth.currentUser, post);
   }
 
   return (
@@ -228,6 +234,20 @@ function FreelanceForm() {
                 </FormItem>
               )}
             ></FormField>
+
+            <Separator />
+            <h2 className="text-2xl font-yeseva">Optional: Upload an image</h2>
+
+            <div className="flex gap-6">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  setImageList(event.target.files);
+                }}
+                className="file:bg-sky-200 file:rounded file:px-3 file:outline-2 file:outline-slate-200 hover:bg-slate-50 transition-all ease-in-out"
+              />
+            </div>
 
             <Button className="w-fit pl-12 pr-12" type="submit">
               Post

@@ -32,6 +32,11 @@ import {
   where,
   or,
 } from 'firebase/firestore';
+
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+
+import { v4 } from 'uuid';
+
 import { getCustomAvatarURL } from '@/utils/avatars';
 
 const firebaseConfig = {
@@ -46,6 +51,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 // const analytics = getAnalytics(app);
 
 export type UserDoc = {
@@ -53,6 +59,7 @@ export type UserDoc = {
   displayName: string;
   email: string;
   photoURL: string;
+  posts: string[];
   likedPosts: string[];
   appliedPosts: string[];
 };
@@ -80,6 +87,7 @@ export type Post = {
   experienceTypes: string[];
   likes: number;
   applicants: string[];
+  imageURL: string | null;
 };
 
 export const auth = getAuth();
@@ -192,6 +200,16 @@ export async function unapplyToPost(userAuth: User, postId: string) {
   await updateDoc(postRef, {
     applicants: arrayRemove(userAuth.uid),
   });
+}
+
+export async function uploadImageReturnURL(imageList: FileList | null) {
+  if (imageList == null) return null;
+  const image = imageList[0];
+  // make sure each image has a unique url
+  const imageRef = ref(storage, `images/${image.name + v4()}`);
+  await uploadBytes(imageRef, image);
+  const URL = await getDownloadURL(imageRef);
+  return URL;
 }
 
 export async function checkIsPostApplied(userAuth: User, postId: string) {
@@ -312,7 +330,12 @@ export async function createUserDocFromAuth(userAuth: User, name: string) {
   return userDocRef;
 }
 
-export async function createPost(formValues: Post) {
+export async function createPost(userAuth: User, formValues: Post) {
   const postsRef = collection(db, 'posts');
-  await addDoc(postsRef, formValues);
+
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const postRef = await addDoc(postsRef, formValues);
+  await updateDoc(userDocRef, {
+    posts: arrayUnion(postRef.id),
+  });
 }
