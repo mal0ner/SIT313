@@ -15,6 +15,9 @@ Cameron Malone 218344989
 - Events from child to parent React: https://stackoverflow.com/questions/74864178/how-do-i-emit-events-from-a-child-component-to-a-parent-component-in-react
 - Defining and using types for typesafety with Firebase and typescript: https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
 - Define type for function callback in object typescript: https://stackoverflow.com/questions/29689966/how-to-define-type-for-a-function-callback-as-any-function-type-not-universal
+- TypeScript function types: https://dmitripavlutin.com/typescript-function-type/
+- Firestore query by array of object field value: https://stackoverflow.com/questions/54081799/firestore-to-query-by-an-arrays-field-value
+- Firestore query on substring of property value: https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search
 
 ### Fixes
 
