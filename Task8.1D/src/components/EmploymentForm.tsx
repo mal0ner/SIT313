@@ -98,6 +98,8 @@ function FreelanceForm() {
       paymentMax: values.paymentMax,
       workingHours: values.workingHours,
       experience: values.experience as Experience[],
+      // this is to allow for querying the list of experience needed as well
+      experienceTypes: values.experience.map((exp) => exp.type),
       likes: 0,
       applicants: [],
       createdDate: Timestamp.now(),

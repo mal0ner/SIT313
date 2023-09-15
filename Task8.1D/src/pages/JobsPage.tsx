@@ -1,4 +1,4 @@
-import { Post, auth, getPosts } from '@/utils/firebase';
+import { Post, auth, getPosts, getPostsWithQuery } from '@/utils/firebase';
 import { useEffect, useState } from 'react';
 import PostCard from '@/components/PostCard';
 
@@ -18,18 +18,31 @@ import { useNavigate } from 'react-router-dom';
 function JobsPage() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[] | []>([]);
-  const [filter, setFilter] = useState<string>('');
-  const [query, setQuery] = useState<Set<string>>(new Set());
+  const [titleFilter, setTitleFilter] = useState<string>('');
+  const [skillsFilter, setSkillsFilter] = useState<string>('');
+  // const [queryReady, setQueryReady] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [deletedPosts, setDeletedPosts] = useState<string[]>([]);
 
-  function handleFilterChange() {
-    const searchItems = filter.split(',');
-    searchItems.forEach((s, idx) => {
-      searchItems[idx] = s.trim().toLowerCase();
+  async function handleFilterChange() {
+    const titles: string[] = [];
+    titleFilter.split(',').forEach((t) => {
+      if (t.trim() != '') {
+        titles.push(t.trim());
+      }
     });
-    // prevent duplication
-    setQuery(new Set(searchItems));
+
+    const skills: string[] = [];
+    skillsFilter.split(',').forEach((s) => {
+      if (s.trim() != '') {
+        skills.push(s.trim());
+      }
+    });
+
+    setIsLoading(true);
+    const posts = await getPostsWithQuery(titles, skills);
+    setPosts(posts);
+    setIsLoading(false);
   }
 
   function hidePost(id: string) {
@@ -69,7 +82,7 @@ function JobsPage() {
             <Input
               type="search"
               placeholder="Senior Software Engineer"
-              onChange={(e) => setFilter(e.target.value)}
+              onChange={(e) => setTitleFilter(e.target.value)}
             />
           </div>
           <div className="flex gap-3 items-center w-full max-w-prose">
@@ -77,11 +90,14 @@ function JobsPage() {
             <Input
               type="search"
               placeholder="C++, Javascript, Angular, React"
-              onChange={(e) => setFilter(e.target.value)}
+              onChange={(e) => setSkillsFilter(e.target.value)}
             />
           </div>
           <div className="flex gap-3 items-center justify-center w-full max-w-prose">
-            <Button className="w-1/2" onClick={handleFilterChange}>
+            <Button
+              className="w-1/2"
+              onClick={async () => handleFilterChange()}
+            >
               {isLoading && <Loader2 className="animate-spin" />}
               {!isLoading && 'Apply'}
             </Button>
@@ -97,7 +113,6 @@ function JobsPage() {
             </Popover>
           </div>
         </div>
-        <p>{query}</p>
       </div>
       <div className="w-full flex items-center mt-12 mb-12">
         {isLoading && (
@@ -107,6 +122,7 @@ function JobsPage() {
         )}
         {!isLoading && (
           <div className="flex flex-col gap-5 items-center w-full">
+            {posts.length == 0 ? <div>Uh oh, there's nothing here!</div> : null}
             {posts.map((post: Post, index) => {
               if (!deletedPosts.includes(post.postId)) {
                 return <PostCard key={index} post={post} hide={hidePost} />;

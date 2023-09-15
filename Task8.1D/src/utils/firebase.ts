@@ -29,6 +29,8 @@ import {
   arrayUnion,
   arrayRemove,
   increment,
+  where,
+  or,
 } from 'firebase/firestore';
 import { getCustomAvatarURL } from '@/utils/avatars';
 
@@ -75,6 +77,7 @@ export type Post = {
   paymentMax: number;
   workingHours: number;
   experience: Experience[] | null;
+  experienceTypes: string[];
   likes: number;
   applicants: string[];
 };
@@ -196,6 +199,75 @@ export async function checkIsPostApplied(userAuth: User, postId: string) {
   const userSnapshot = await getDoc(userDocRef);
   const userData = userSnapshot.data() as UserDoc;
   return userData.appliedPosts.includes(postId);
+}
+
+async function getPostsByTitle(titles: string[]) {
+  const postsQuery = query(
+    collection(db, 'posts'),
+    limit(20),
+    where('title', 'in', titles),
+  );
+  const snapshot = await getDocs(postsQuery);
+  const data: Post[] = [];
+  snapshot.forEach((doc) => {
+    const post: Post = doc.data() as Post;
+    post.postId = doc.id;
+    data.push(post);
+  });
+  return data;
+}
+
+async function getPostsBySkills(skills: string[]) {
+  console.log(`got skills: ${skills}`);
+  const postsQuery = query(
+    collection(db, 'posts'),
+    or(
+      where('skills', 'array-contains-any', skills),
+      where('experienceTypes', 'array-contains-any', skills),
+    ),
+  );
+  const snapshot = await getDocs(postsQuery);
+  const data: Post[] = [];
+  snapshot.forEach((doc) => {
+    const post: Post = doc.data() as Post;
+    post.postId = doc.id;
+    data.push(post);
+  });
+  return data;
+}
+
+async function getPostsByTitleAndSkills(titles: string[], skills: string[]) {
+  const postsQuery = query(
+    collection(db, 'posts'),
+    limit(20),
+    where('title', 'in', titles),
+    where('skills', 'array-contains-any', skills),
+  );
+  const snapshot = await getDocs(postsQuery);
+  const data: Post[] = [];
+  snapshot.forEach((doc) => {
+    const post: Post = doc.data() as Post;
+    post.postId = doc.id;
+    data.push(post);
+  });
+  return data;
+}
+
+export async function getPostsWithQuery(titles: string[], skills: string[]) {
+  console.log(`titles length: ${titles.length}`);
+  console.log(`skills length: ${skills.length}`);
+  if (titles.length == 0 && skills.length == 0) {
+    return await getPosts();
+  } else if (titles.length > 0 && skills.length == 0) {
+    return await getPostsByTitle(titles);
+  } else if (titles.length == 0 && skills.length > 0) {
+    return await getPostsBySkills(skills);
+  } else {
+    console.log(
+      `querying both, skills length: ${skills.length}, titles len: ${titles.length}`,
+    );
+    return await getPostsByTitleAndSkills(titles, skills);
+  }
 }
 
 export async function getUserData(userUID: string) {
