@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Separator } from './ui/separator';
 
+import HamburgerMenu from '@/components/HamburgerMenu';
+
 function Navbar() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState<User | null>(null);
@@ -31,7 +33,7 @@ function Navbar() {
   });
   return (
     <>
-      <div className="flex justify-center md:justify-between font-josefin m-4">
+      <div className="flex justify-between items-center font-josefin m-4">
         <h1 className="font-bold italic text-xl select-none">
           <Link to={'/'}>
             <span className="bg-sky-200 p-2 rounded hover:bg-blue-300 transition ease duration-200">
@@ -40,8 +42,11 @@ function Navbar() {
           </Link>{' '}
           Marketplace
         </h1>
-        <nav className="bold hidden md:flex font-josefin">
-          <NavigationMenu>
+        <nav className="bold font-josefin">
+          <div className="flex md:hidden">
+            <HamburgerMenu user={currentUser} />
+          </div>
+          <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <Link
