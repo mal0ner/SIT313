@@ -76,6 +76,7 @@ export type Post = {
   workingHours: number;
   experience: Experience[] | null;
   likes: number;
+  applicants: string[];
 };
 
 export const auth = getAuth();
@@ -166,6 +167,35 @@ export async function unlikePost(userAuth: User, postId: string) {
   await updateDoc(postRef, {
     likes: increment(-1),
   });
+}
+
+export async function applyToPost(userAuth: User, postId: string) {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const postRef = doc(db, 'posts', postId);
+  await updateDoc(userDocRef, {
+    appliedPosts: arrayUnion(postId),
+  });
+  await updateDoc(postRef, {
+    applicants: arrayUnion(userAuth.uid),
+  });
+}
+
+export async function unapplyToPost(userAuth: User, postId: string) {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const postRef = doc(db, 'posts', postId);
+  await updateDoc(userDocRef, {
+    appliedPosts: arrayRemove(postId),
+  });
+  await updateDoc(postRef, {
+    applicants: arrayRemove(userAuth.uid),
+  });
+}
+
+export async function checkIsPostApplied(userAuth: User, postId: string) {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+  const userData = userSnapshot.data() as UserDoc;
+  return userData.appliedPosts.includes(postId);
 }
 
 export async function getUserData(userUID: string) {

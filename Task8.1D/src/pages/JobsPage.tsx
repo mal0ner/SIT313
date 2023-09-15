@@ -28,6 +28,7 @@ function JobsPage() {
     searchItems.forEach((s, idx) => {
       searchItems[idx] = s.trim().toLowerCase();
     });
+    // prevent duplication
     setQuery(new Set(searchItems));
   }
 

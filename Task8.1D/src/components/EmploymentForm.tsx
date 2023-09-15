@@ -99,6 +99,7 @@ function FreelanceForm() {
       workingHours: values.workingHours,
       experience: values.experience as Experience[],
       likes: 0,
+      applicants: [],
       createdDate: Timestamp.now(),
     };
     console.log('got here submit');

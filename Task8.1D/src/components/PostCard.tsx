@@ -1,10 +1,13 @@
 import {
   Post,
   UserDoc,
+  applyToPost,
   auth,
+  checkIsPostApplied,
   checkIsPostLiked,
   getUserData,
   likePost,
+  unapplyToPost,
   unlikePost,
 } from '@/utils/firebase';
 
@@ -45,6 +48,7 @@ function PostCard(props: PostCardProps) {
   const [posterData, setPosterData] = useState<UserDoc | null>(null);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(props.post.likes);
+  const [isApplied, setIsApplied] = useState<boolean>(false);
 
   function getExperienceColor(years: number) {
     if (years < 3) {
@@ -68,6 +72,22 @@ function PostCard(props: PostCardProps) {
     }
   }
 
+  async function handleApplication() {
+    if (isApplied && auth.currentUser) {
+      setIsApplied(false);
+      // This would theoretically do something other than just remove the user from the
+      // applicants field of the post doc and the post id from the users applications field
+      // but alas for now this is it.
+      await unapplyToPost(auth.currentUser, props.post.postId);
+    } else if (!isApplied && auth.currentUser) {
+      setIsApplied(true);
+      // This would theoretically do something other than just add the user to the
+      // applicants field of the post doc and the post id to the users applications field
+      // but alas for now this is it.
+      await applyToPost(auth.currentUser, props.post.postId);
+    }
+  }
+
   useEffect(() => {
     async function getPosterData() {
       if (!auth.currentUser) return;
@@ -76,7 +96,12 @@ function PostCard(props: PostCardProps) {
         auth.currentUser,
         props.post.postId,
       );
+      const isPostApplied: boolean = await checkIsPostApplied(
+        auth.currentUser,
+        props.post.postId,
+      );
       setIsLiked(isPostLiked);
+      setIsApplied(isPostApplied);
       setPosterData(userData);
     }
     getPosterData();
@@ -197,8 +222,15 @@ function PostCard(props: PostCardProps) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline">
-                      <Send size={18} />
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        setIsApplied(!isApplied);
+                        await handleApplication();
+                      }}
+                    >
+                      {!isApplied && <Send size={18} />}
+                      {isApplied && <Send size={18} fill="#0ea5e9" />}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -217,7 +249,7 @@ function PostCard(props: PostCardProps) {
                       }}
                     >
                       {!isLiked && <Heart size={18} />}
-                      {isLiked && <Heart size={18} fill="#ff584d" />}
+                      {isLiked && <Heart size={18} fill="#e11d48" />}
                       <p className="ml-3 text-xs text-slate-400">{likes}</p>
                     </Button>
                   </TooltipTrigger>

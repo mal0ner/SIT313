@@ -91,6 +91,7 @@ function FreelanceForm() {
       workingHours: values.workingHours,
       experience: null,
       likes: 0,
+      applicants: [],
       createdDate: Timestamp.now(),
     };
     await createPost(post);
