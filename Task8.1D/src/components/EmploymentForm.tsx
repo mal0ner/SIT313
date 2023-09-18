@@ -25,6 +25,7 @@ import {
   uploadImageReturnURL,
 } from '@/utils/firebase';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //coerce allows for string input to be autocast to number
 const formSchema = z
@@ -61,7 +62,8 @@ const formSchema = z
   });
 
 //TODO: Add missing fields from db and firebase Post type to schema
-function FreelanceForm() {
+function EmploymentForm() {
+  const navigate = useNavigate();
   const [imageList, setImageList] = useState<FileList | null>(null);
 
   // define our form.
@@ -118,7 +120,14 @@ function FreelanceForm() {
       imageURL: imageURL ?? null,
       createdDate: Timestamp.now(),
     };
-    await createPost(auth.currentUser, post);
+    try {
+      await createPost(auth.currentUser, post);
+      navigate('/jobs');
+    } catch (error: any) {
+      alert(
+        error.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, ''),
+      );
+    }
   }
 
   const { fields, append, remove } = useFieldArray({
@@ -373,4 +382,4 @@ function FreelanceForm() {
   );
 }
 
-export default FreelanceForm;
+export default EmploymentForm;

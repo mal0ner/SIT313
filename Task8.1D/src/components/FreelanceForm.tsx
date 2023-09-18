@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { Timestamp } from 'firebase/firestore';
 import { auth, createPost, Post, uploadImageReturnURL } from '@/utils/firebase';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //TODO: Ensure MAX Pay is > MIN pay
 //coerce allows for string input to be autocast to number
@@ -50,6 +51,7 @@ const formSchema = z
 
 //DONE: Add missing fields from db and firebase Post type to schema
 function FreelanceForm() {
+  const navigate = useNavigate();
   const [imageList, setImageList] = useState<FileList | null>(null);
   // define our form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -101,7 +103,14 @@ function FreelanceForm() {
       imageURL: imageURL ?? null,
       createdDate: Timestamp.now(),
     };
-    await createPost(auth.currentUser, post);
+    try {
+      await createPost(auth.currentUser, post);
+      navigate('/jobs');
+    } catch (error: any) {
+      alert(
+        error.message.replace('Firebase: ', '').replace(/\(auth.*\)\.?/, ''),
+      );
+    }
   }
 
   return (
@@ -129,6 +138,21 @@ function FreelanceForm() {
                 </FormItem>
               )}
             ></FormField>
+
+            <FormField
+              control={form.control}
+              name="business"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Business</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Willow Tech Consulting" {...field} />
+                  </FormControl>
+                  <FormDescription>Company name</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
@@ -249,7 +273,7 @@ function FreelanceForm() {
               />
             </div>
 
-            <Button className="w-fit pl-12 pr-12" type="submit">
+            <Button type="submit" className="w-fit pl-12 pr-12">
               Post
             </Button>
           </form>
