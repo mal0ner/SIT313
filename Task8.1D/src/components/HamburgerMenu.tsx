@@ -35,8 +35,16 @@ function HamburgerMenu(props: MenuProps) {
               <Link to={'jobs'}>Find Jobs</Link>
             </MenubarItem>
             <MenubarSeparator />
-            {!props.user && <MenubarItem>Login</MenubarItem>}
-            {!props.user && <MenubarItem>Signup</MenubarItem>}
+            {!props.user && (
+              <MenubarItem>
+                <Link to={'/login'}>Login</Link>
+              </MenubarItem>
+            )}
+            {!props.user && (
+              <MenubarItem>
+                <Link to={'/signup'}>Signup</Link>
+              </MenubarItem>
+            )}
             {props.user && (
               <MenubarSub>
                 <MenubarSubTrigger>
