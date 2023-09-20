@@ -13,6 +13,7 @@ import ErrorPage from '@/pages/ErrorPage';
 
 import FreelanceForm from '@/components/FreelanceForm';
 import EmploymentForm from '@/components/EmploymentForm';
+import ProfilePage from './pages/ProfilePage';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: 'jobs/',
         element: <JobsPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
       },
     ],
   },

@@ -79,7 +79,7 @@ function Navbar() {
                             <Link to="#">
                               <ListItem>Posts</ListItem>
                             </Link>
-                            <Link to="#">
+                            <Link to="/profile">
                               <ListItem>Edit Profile</ListItem>
                             </Link>
                             <Separator />

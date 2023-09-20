@@ -1,6 +1,5 @@
 import { Post, auth, getPosts, getPostsWithQuery } from '@/utils/firebase';
 import { useEffect, useState } from 'react';
-import PostCard from '@/components/PostCard';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,7 @@ import {
 
 import { Info, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PostShowcase from '@/components/PostShowcase';
 
 function JobsPage() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ function JobsPage() {
   const [skillsFilter, setSkillsFilter] = useState<string>('');
   // const [queryReady, setQueryReady] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [deletedPosts, setDeletedPosts] = useState<string[]>([]);
+  const [hiddenPosts, setHiddenPosts] = useState<string[]>([]);
 
   async function handleFilterChange() {
     const titles: string[] = [];
@@ -46,7 +46,7 @@ function JobsPage() {
   }
 
   function hidePost(id: string) {
-    setDeletedPosts(deletedPosts.concat(id));
+    setHiddenPosts(hiddenPosts.concat(id));
   }
 
   useEffect(() => {
@@ -121,14 +121,11 @@ function JobsPage() {
           </div>
         )}
         {!isLoading && (
-          <div className="flex flex-col gap-5 items-center w-full">
-            {posts.length == 0 ? <div>Uh oh, there's nothing here!</div> : null}
-            {posts.map((post: Post, index) => {
-              if (!deletedPosts.includes(post.postId)) {
-                return <PostCard key={index} post={post} hide={hidePost} />;
-              }
-            })}
-          </div>
+          <PostShowcase
+            posts={posts}
+            hiddenPosts={hiddenPosts}
+            hide={hidePost}
+          />
         )}
       </div>
     </div>
