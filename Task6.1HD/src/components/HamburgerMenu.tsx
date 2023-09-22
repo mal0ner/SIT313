@@ -9,17 +9,19 @@ import {
   MenubarSubTrigger,
   MenubarSeparator,
 } from '@/components/ui/menubar';
+import { signOutCurrentUser } from '@/utils/firebase';
 
 import { User } from 'firebase/auth';
 import { Menu } from 'lucide-react';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type MenuProps = {
   user: User | null;
 };
 
 function HamburgerMenu(props: MenuProps) {
+  const navigate = useNavigate();
   return (
     <>
       <Menubar className="w-fit">
@@ -60,8 +62,18 @@ function HamburgerMenu(props: MenuProps) {
                 </MenubarSubTrigger>
                 <MenubarSubContent>
                   <MenubarItem>My Posts</MenubarItem>
-                  <MenubarItem>
+                  <MenubarItem className="cursor-pointer">
                     <Link to={'/profile'}>Profile</Link>
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem
+                    className="cursor-pointer text-rose-500"
+                    onClick={() => {
+                      signOutCurrentUser();
+                      navigate('/');
+                    }}
+                  >
+                    Sign Out
                   </MenubarItem>
                 </MenubarSubContent>
               </MenubarSub>
