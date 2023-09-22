@@ -277,8 +277,6 @@ async function getPostsByTitleAndSkills(titles: string[], skills: string[]) {
 }
 
 export async function getPostsWithQuery(titles: string[], skills: string[]) {
-  console.log(`titles length: ${titles.length}`);
-  console.log(`skills length: ${skills.length}`);
   if (titles.length == 0 && skills.length == 0) {
     return await getPosts();
   } else if (titles.length > 0 && skills.length == 0) {
