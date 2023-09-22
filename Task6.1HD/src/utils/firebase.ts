@@ -31,6 +31,7 @@ import {
   increment,
   where,
   or,
+  orderBy,
 } from 'firebase/firestore';
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
@@ -144,7 +145,11 @@ export async function signOutCurrentUser() {
 }
 
 export async function getPosts() {
-  const postsQuery = query(collection(db, 'posts'), limit(20));
+  const postsQuery = query(
+    collection(db, 'posts'),
+    limit(20),
+    orderBy('createdDate', 'desc'),
+  );
   const snapshot = await getDocs(postsQuery);
   const data: Post[] = [];
   snapshot.forEach((doc) => {
