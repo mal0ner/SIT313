@@ -91,8 +91,6 @@ function EmploymentForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // This will be DB connection eventually
     if (!auth.currentUser) {
       return;
     }
@@ -107,7 +105,7 @@ function EmploymentForm() {
       title: values.title,
       business: values.business,
       description: values.description,
-      skills: values.skills.split(','),
+      skills: values.skills.split(',').map((s) => s.trim()),
       projectLength: values.projectLength,
       paymentMin: values.paymentMin,
       paymentMax: values.paymentMax,

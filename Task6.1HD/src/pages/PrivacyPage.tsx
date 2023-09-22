@@ -10,10 +10,12 @@ function PrivacyPage() {
   }, [pathname]);
 
   return (
-    <div className="flex flex-col gap-6 p-10 items-center justify-center text-xs sm:text-sm md:text-md lg:text-lg text-justify">
-      <h1 className="text-2xl font-bold">Privacy Policy</h1>
+    <div className="flex flex-col gap-6 p-10 items-center justify-center text-xs text-slate-500 sm:text-sm md:text-md lg:text-lg text-justify">
+      <h1 className="text-black text-2xl font-bold">Privacy Policy</h1>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Information Collection and Use</h2>
+        <h2 className="text-black text-lg font-bold">
+          Information Collection and Use
+        </h2>
         <p>
           DevLink Marketplace may collect and process the following types of
           personal information: <br />
@@ -39,7 +41,7 @@ function PrivacyPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Information Processing</h2>
+        <h2 className="text-black text-lg font-bold">Information Processing</h2>
         <p>
           DevLink Marketplace may use personal information for the following
           purposes:
@@ -63,7 +65,7 @@ function PrivacyPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Data Sharing</h2>
+        <h2 className="text-black text-lg font-bold">Data Sharing</h2>
         <p>
           DevLink Marketplace may share personal information with the following
           entities for the purposes outlined in this Privacy Policy:
@@ -81,7 +83,7 @@ function PrivacyPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Security Measures</h2>
+        <h2 className="text-black text-lg font-bold">Security Measures</h2>
         <p>
           DevLink Marketplace takes reasonable measures to protect users'
           personal information from unauthorized access, disclosure, alteration,
@@ -91,7 +93,7 @@ function PrivacyPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Data Retention</h2>
+        <h2 className="text-black text-lg font-bold">Data Retention</h2>
         <p>
           Personal information will be retained for as long as necessary to
           fulfill the purposes outlined in this Privacy Policy, or as required
@@ -99,7 +101,9 @@ function PrivacyPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">User Choices and Rights</h2>
+        <h2 className="text-black text-lg font-bold">
+          User Choices and Rights
+        </h2>
         <p>
           Users may have the following rights concerning their personal
           information:
@@ -122,7 +126,9 @@ function PrivacyPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Updates to Privacy Policy</h2>
+        <h2 className="text-black text-lg font-bold">
+          Updates to Privacy Policy
+        </h2>
         <p>
           DevLink Marketplace may update this Privacy Policy from time to time
           to reflect changes in our practices or for legal reasons. Users will

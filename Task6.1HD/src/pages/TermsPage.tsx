@@ -10,8 +10,8 @@ function TermsPage() {
   }, [pathname]);
 
   return (
-    <div className="flex text-xs sm:text-sm md:text-md lg:text-lg flex-col gap-6 p-10 items-center justify-center text-justify">
-      <h1 className="text-2xl font-bold">Terms of Service</h1>
+    <div className="flex text-xs text-slate-500 sm:text-sm md:text-md lg:text-lg flex-col gap-6 p-10 items-center justify-center text-justify">
+      <h1 className="text-black text-2xl font-bold">Terms of Service</h1>
       <section className="flex flex-col gap-3 w-full">
         <p>
           Acceptance of Terms By accessing or using DevLink Marketplace , all
@@ -21,7 +21,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Eligibility</h2>
+        <h2 className="text-black text-lg font-bold">Eligibility</h2>
         <p>
           Users must be at least 18 years old and legally capable of forming a
           binding contract to use the Platform. DevLink Marketplace reserves the
@@ -31,7 +31,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Accout Registration</h2>
+        <h2 className="text-black text-lg font-bold">Accout Registration</h2>
         <p>
           Users must create an account to access certain features of the
           Platform. During registration, users must provide accurate and
@@ -43,7 +43,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">User Posts and Content</h2>
+        <h2 className="text-black text-lg font-bold">User Posts and Content</h2>
         <p>
           The Platform allows both Developers and Employers to create posts for
           availability. Users are solely responsible for the content they post
@@ -55,7 +55,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Fees and Payment</h2>
+        <h2 className="text-black text-lg font-bold">Fees and Payment</h2>
         <p>
           DevLink Marketplace may charge fees for the use of certain features or
           services. Any applicable fees and payment terms will be clearly
@@ -65,7 +65,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Intellectual Property</h2>
+        <h2 className="text-black text-lg font-bold">Intellectual Property</h2>
         <p>
           Users retain ownership of the content they post on the Platform. By
           posting content, users grant DevLink Marketplace a non-exclusive,
@@ -75,7 +75,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Prohibited Conduct</h2>
+        <h2 className="text-black text-lg font-bold">Prohibited Conduct</h2>
         <p>Users agree not to engage in any conduct that may: </p>
         <div className="flex flex-col gap-1 text-left">
           <p>
@@ -106,7 +106,7 @@ function TermsPage() {
         </div>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Dispute Resolution</h2>
+        <h2 className="text-black text-lg font-bold">Dispute Resolution</h2>
         <p>
           Any disputes arising from or relating to these Terms of Service or the
           use of the Platform shall be resolved through arbitration in
@@ -116,7 +116,9 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Limitation of Liability</h2>
+        <h2 className="text-black text-lg font-bold">
+          Limitation of Liability
+        </h2>
         <p>
           DevLink Marketplace shall not be liable for any direct, indirect,
           incidental, special, consequential, or exemplary damages resulting
@@ -125,7 +127,7 @@ function TermsPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Amendments to Terms</h2>
+        <h2 className="text-black text-lg font-bold">Amendments to Terms</h2>
         <p>
           DevLink Marketplace reserves the right to update or modify these Terms
           of Service at any time. Users will be notified of any changes, and

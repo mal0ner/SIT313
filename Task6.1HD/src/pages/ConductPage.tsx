@@ -10,8 +10,8 @@ function ConductPage() {
   }, [pathname]);
 
   return (
-    <div className="flex flex-col gap-6 p-10 items-center justify-center text-xs sm:text-sm md:text-md lg:text-lg text-justify">
-      <h1 className="text-2xl font-bold">Code of Conduct</h1>
+    <div className="flex flex-col gap-6 p-10 items-center justify-center text-slate-500 text-xs sm:text-sm md:text-md lg:text-lg text-justify">
+      <h1 className="text-black text-2xl font-bold">Code of Conduct</h1>
       <section className="flex flex-col gap-3 w-full">
         <p>
           At DevLink Marketplace, we are committed to fostering a positive and
@@ -21,7 +21,9 @@ function ConductPage() {
         </p>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Professionalism and Respect</h2>
+        <h2 className="text-black text-lg font-bold">
+          Professionalism and Respect
+        </h2>
         <ul className="flex flex-col gap-3">
           <li>
             Treat all users with respect, regardless of their background,
@@ -40,7 +42,9 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Transparency and Accuracy</h2>
+        <h2 className="text-black text-lg font-bold">
+          Transparency and Accuracy
+        </h2>
         <ul className="flex flex-col gap-3">
           <li>
             Provide accurate and truthful information in your posts, proposals,
@@ -53,7 +57,9 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Privacy and Data Protection</h2>
+        <h2 className="text-black text-lg font-bold">
+          Privacy and Data Protection
+        </h2>
         <ul className="flex flex-col gap-3">
           <li>
             Respect the privacy and confidentiality of other users' information.
@@ -65,7 +71,7 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Intellectual Property</h2>
+        <h2 className="text-black text-lg font-bold">Intellectual Property</h2>
         <ul className="flex flex-col gap-3">
           <li>
             Respect the intellectual property rights of others. Do not use or
@@ -75,7 +81,7 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Communication</h2>
+        <h2 className="text-black text-lg font-bold">Communication</h2>
         <ul className="flex flex-col gap-3">
           <li>
             Respond to messages and inquiries promptly and professionally.
@@ -87,7 +93,7 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Fair Competition</h2>
+        <h2 className="text-black text-lg font-bold">Fair Competition</h2>
         <ul className="flex flex-col gap-3">
           <li>
             Do not engage in unfair or deceptive practices to gain an advantage
@@ -99,7 +105,7 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Reporting Violations</h2>
+        <h2 className="text-black text-lg font-bold">Reporting Violations</h2>
         <ul className="flex flex-col gap-3">
           <li>
             If you encounter a violation of this code of conduct, report it to
@@ -111,7 +117,9 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Consequences of Violations</h2>
+        <h2 className="text-black text-lg font-bold">
+          Consequences of Violations
+        </h2>
         <p>Violations of this code of conduct may result in:</p>
         <ul className="flex flex-col gap-3 list-disc list-inside">
           <li>Warning or suspension of your account.</li>
@@ -120,7 +128,7 @@ function ConductPage() {
         </ul>
       </section>
       <section className="flex flex-col gap-3 w-full">
-        <h2 className="text-lg font-bold">Continuous Improvement</h2>
+        <h2 className="text-black text-lg font-bold">Continuous Improvement</h2>
         <p>
           We are committed to continuously improving our platform and community.
           Your feedback and suggestions for making DevLink Marketplace a better
