@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Twitter, Facebook, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -55,13 +56,13 @@ function Footer() {
           <h2 className="font-yeseva text-lg md:text-xl">DEVLink</h2>
           <div className="flex flex-col md:flex-row md:justify-between">
             <Button variant="link">
-              <a href="#">Privacy Policy</a>
+              <Link to={'/privacy'}>Privacy Policy</Link>
             </Button>
             <Button variant="link">
-              <a href="#">Terms of Service</a>
+              <Link to={'/terms'}>Terms of Service</Link>
             </Button>
             <Button variant="link">
-              <a href="#">Code of Conduct</a>
+              <Link to={'/conduct'}>Code of Conduct</Link>
             </Button>
           </div>
         </div>
