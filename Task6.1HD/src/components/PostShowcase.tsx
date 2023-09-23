@@ -5,6 +5,7 @@ type PostShowcaseProps = {
   posts: Post[];
   hide: (id: string) => void;
   hiddenPosts: string[];
+  emptyMessage?: string;
 };
 
 function PostShowcase(props: PostShowcaseProps) {
@@ -12,7 +13,11 @@ function PostShowcase(props: PostShowcaseProps) {
     <>
       <div className="flex flex-col gap-5 items-center w-full">
         {props.posts.length == 0 ? (
-          <div>Uh oh, there's nothing here!</div>
+          props.emptyMessage ? (
+            <div>{props.emptyMessage}</div>
+          ) : (
+            <div>Uh oh! There's nothing here!</div>
+          )
         ) : null}
         {props.posts.map((post: Post, index) => {
           if (!props.hiddenPosts.includes(post.postId)) {
