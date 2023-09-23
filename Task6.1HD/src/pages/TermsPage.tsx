@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
 
 function TermsPage() {
   const { pathname } = useLocation();
@@ -11,6 +13,14 @@ function TermsPage() {
 
   return (
     <div className="flex text-xs text-slate-500 sm:text-sm md:text-md lg:text-lg flex-col gap-6 p-10 items-center justify-center text-justify">
+      <Alert className="max-w-prose">
+        <AlertTriangle size={20} />
+        <AlertTitle>Heads Up!</AlertTitle>
+        <AlertDescription>
+          This page is for demonstration purposes only, and does not reflect the
+          views or policies of a real business or entity.
+        </AlertDescription>
+      </Alert>
       <h1 className="text-black text-2xl font-bold">Terms of Service</h1>
       <section className="flex flex-col gap-3 w-full">
         <p>

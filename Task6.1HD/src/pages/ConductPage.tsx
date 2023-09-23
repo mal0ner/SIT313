@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
 
 function ConductPage() {
   const { pathname } = useLocation();
@@ -11,6 +13,14 @@ function ConductPage() {
 
   return (
     <div className="flex flex-col gap-6 p-10 items-center justify-center text-slate-500 text-xs sm:text-sm md:text-md lg:text-lg text-justify">
+      <Alert className="max-w-prose">
+        <AlertTriangle size={20} />
+        <AlertTitle>Heads Up!</AlertTitle>
+        <AlertDescription>
+          This page is for demonstration purposes only, and does not reflect the
+          views or policies of a real business or entity.
+        </AlertDescription>
+      </Alert>
       <h1 className="text-black text-2xl font-bold">Code of Conduct</h1>
       <section className="flex flex-col gap-3 w-full">
         <p>
