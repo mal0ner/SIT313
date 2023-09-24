@@ -15,6 +15,7 @@ import ProfilePage from '@/pages/ProfilePage';
 import PrivacyPage from '@/pages/PrivacyPage';
 import TermsPage from '@/pages/TermsPage';
 import ConductPage from '@/pages/ConductPage';
+import MyPostsPage from '@/pages/MyPostsPage';
 
 import FreelanceForm from '@/components/FreelanceForm';
 import EmploymentForm from '@/components/EmploymentForm';
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <ProfilePage />,
+      },
+      {
+        path: 'profile/posts',
+        element: <MyPostsPage />,
       },
       {
         path: 'privacy',
