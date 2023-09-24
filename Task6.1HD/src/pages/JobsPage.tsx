@@ -1,4 +1,4 @@
-import { Post, getPosts, getPostsWithQuery } from '@/utils/firebase';
+import { Post, getPostsWithQuery } from '@/utils/firebase';
 import { useContext, useEffect, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
