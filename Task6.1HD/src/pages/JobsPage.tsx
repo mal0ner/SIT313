@@ -25,27 +25,26 @@ function JobsPage() {
   const titles = searchParams.getAll('title');
   const skills = searchParams.getAll('skills');
   const [posts, setPosts] = useState<Post[] | []>([]);
-  const [titleFilter, setTitleFilter] = useState<string>('');
-  const [skillsFilter, setSkillsFilter] = useState<string>('');
-  // const [queryReady, setQueryReady] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hiddenPosts, setHiddenPosts] = useState<string[]>([]);
 
+  function strToSearchParams(key: string, params: string) {
+    searchParams.delete(key);
+    params.split(',').forEach((param) => {
+      if (param.trim() != '') {
+        searchParams.append(key, param.trim());
+      }
+    });
+    setSearchParams(searchParams);
+  }
+
+  function searchParamsToStr(key: string) {
+    const res = searchParams.getAll(key);
+    if (res.length > 0) return res.join(', ');
+    return '';
+  }
+
   async function handleFilterChange() {
-    const titles: string[] = [];
-    titleFilter.split(',').forEach((t) => {
-      if (t.trim() != '') {
-        titles.push(t.trim());
-      }
-    });
-
-    const skills: string[] = [];
-    skillsFilter.split(',').forEach((s) => {
-      if (s.trim() != '') {
-        skills.push(s.trim());
-      }
-    });
-
     setIsLoading(true);
     const posts = await getPostsWithQuery(titles, skills);
     setPosts(posts);
@@ -60,7 +59,7 @@ function JobsPage() {
     async function getData() {
       if (!user) return;
       setIsLoading(true);
-      const posts = await getPosts();
+      const posts = await getPostsWithQuery(titles, skills);
       setPosts(posts);
       setIsLoading(false);
     }
@@ -101,7 +100,8 @@ function JobsPage() {
               <Input
                 type="search"
                 placeholder="Senior Software Engineer"
-                onChange={(e) => setSearchParams({ title: e.target.value })}
+                onChange={(e) => strToSearchParams('title', e.target.value)}
+                defaultValue={searchParamsToStr('title')}
               />
             </div>
             <div className="flex gap-3 items-center w-full max-w-prose">
@@ -109,7 +109,8 @@ function JobsPage() {
               <Input
                 type="search"
                 placeholder="C++, Javascript, Angular, React"
-                onChange={(e) => setSkillsFilter(e.target.value)}
+                onChange={(e) => strToSearchParams('skills', e.target.value)}
+                defaultValue={searchParamsToStr('skills')}
               />
             </div>
             <div className="flex gap-3 items-center justify-center w-full max-w-prose">
