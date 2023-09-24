@@ -102,7 +102,6 @@ function PostCard(props: PostCardProps) {
         user,
         props.post.postId,
       );
-      console.log(`Post: ${props.post.postId}`);
       setIsLiked(isPostLiked);
       setIsApplied(isPostApplied);
       setPosterData(userData);

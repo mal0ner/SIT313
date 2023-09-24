@@ -76,7 +76,7 @@ function Navbar() {
                               {currentUser ? currentUser.displayName : ''}
                             </h1>
                             <Separator />
-                            <Link to="#">
+                            <Link to="/profile/posts">
                               <ListItem>Posts</ListItem>
                             </Link>
                             <Link to="/profile">

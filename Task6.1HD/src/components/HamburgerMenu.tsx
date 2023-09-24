@@ -61,7 +61,9 @@ function HamburgerMenu(props: MenuProps) {
                   Profile
                 </MenubarSubTrigger>
                 <MenubarSubContent>
-                  <MenubarItem>My Posts</MenubarItem>
+                  <MenubarItem>
+                    <Link to={'/profile/posts'}>Posts</Link>
+                  </MenubarItem>
                   <MenubarItem className="cursor-pointer">
                     <Link to={'/profile'}>Profile</Link>
                   </MenubarItem>
