@@ -23,7 +23,7 @@ function ProfilePage() {
       setUserData(profile);
     }
     getData();
-  });
+  }, []);
 
   if (loading) {
     return (

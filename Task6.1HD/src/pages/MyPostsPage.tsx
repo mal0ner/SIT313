@@ -16,7 +16,7 @@ function MyPostsPage() {
       setUserData(profile);
     }
     getData();
-  });
+  }, []);
 
   if (loading) {
     return (

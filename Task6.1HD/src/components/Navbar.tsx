@@ -30,7 +30,7 @@ function Navbar() {
 
     // clean up on component unmount
     return () => unsubscribe();
-  });
+  }, []);
   return (
     <>
       <div className="flex justify-between items-center font-josefin m-4">
