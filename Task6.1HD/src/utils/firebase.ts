@@ -2,7 +2,7 @@
 // import 'dotenv/config';
 
 import { initializeApp } from 'firebase/app';
-// import { getAnalytics } from 'firebase/analytics';
+import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -53,7 +53,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-// const analytics = getAnalytics(app);
+const analytics = getAnalytics(app);
 
 export type UserDoc = {
   createdAt: Timestamp;
