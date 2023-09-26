@@ -1,29 +1,13 @@
 import { UserContext } from '@/context/user.context';
-import {
-  Post,
-  UserDoc,
-  getPostsById,
-  getUserData,
-  unlikePost,
-} from '@/utils/firebase';
+import { Post, UserDoc, getPostsById, unlikePost } from '@/utils/firebase';
 import { useContext, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { NavLink, Navigate, Outlet, useOutletContext } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import PostShowcase from '@/components/PostShowcase';
 import { Loader2, ScrollText, Send } from 'lucide-react';
 
 function ProfilePage() {
-  const { user, loading, error } = useContext(UserContext);
-  const [userData, setUserData] = useState<UserDoc | null>(null);
-
-  useEffect(() => {
-    async function getData() {
-      if (!user) return;
-      const profile = await getUserData(user.uid);
-      setUserData(profile);
-    }
-    getData();
-  }, []);
+  const { user, userDoc: userData, loading, error } = useContext(UserContext);
 
   if (loading) {
     return (
@@ -54,48 +38,97 @@ function ProfilePage() {
             </div>
           </div>
         </section>
-        <section className="flex flex-col gap-6 text-center">
-          <h2 className="text-xl font-yeseva">Liked Posts</h2>
-          <LikedPosts user={user} />
-        </section>
+        <ul className="flex flex-wrap gap-6 items-center justify-center">
+          <li>
+            <NavLink
+              to={'/profile/posts'}
+              className={({ isActive }) =>
+                isActive
+                  ? 'rounded-lg px-4 py-2 bg-sky-200 font-bold font-josefin'
+                  : 'rounded-lg px-4 py-2 bg-slate-100 font-josefin'
+              }
+            >
+              My Posts
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={'/profile/likes'}
+              className={({ isActive }) =>
+                isActive
+                  ? 'rounded-lg px-4 py-2 bg-sky-200 font-bold font-josefin'
+                  : 'rounded-lg px-4 py-2 bg-slate-100 font-josefin'
+              }
+            >
+              Liked Posts
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={'/profile/applications'}
+              className={({ isActive }) =>
+                isActive
+                  ? 'rounded-lg px-4 py-2 bg-sky-200 font-bold font-josefin'
+                  : 'rounded-lg px-4 py-2 bg-slate-100 font-josefin'
+              }
+            >
+              Applications
+            </NavLink>
+          </li>
+        </ul>
+        {/*
+          <section className="flex flex-col gap-6 text-center">
+            <h2 className="text-xl font-yeseva">Liked Posts</h2>
+            <LikedPosts user={user} />
+          </section>
 
-        <section className="flex flex-col gap-6 text-center">
-          <h2 className="text-xl font-yeseva">Applied Posts</h2>
-          <AppliedPosts user={user} />
+            <section className="flex flex-col gap-6 text-center">
+              <h2 className="text-xl font-yeseva">Applied Posts</h2>
+                <AppliedPosts user={user} />
         </section>
+        */}
+        <Outlet
+          context={{ user, data: userData } satisfies ProfileOutletProps}
+        />
       </div>
     );
   }
   return <Navigate to={'/login'} />;
 }
 
-type LikedPostsProps = {
+type ProfileOutletProps = {
   user: User;
+  data: UserDoc | null;
 };
 
-type AppliedPostsProps = {
-  user: User;
-};
-
-function AppliedPosts(props: AppliedPostsProps) {
+export function AppliedPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const { user, data } = useOutletContext<ProfileOutletProps>();
   const [hiddenPosts, setHiddenPosts] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  async function hideAndUnapplyToPost(id: string) {
-    setHiddenPosts(hiddenPosts.concat(id));
-    await unlikePost(props.user, id);
+  async function hideAndUnapplyToPost(postId: string) {
+    setHiddenPosts(hiddenPosts.concat(postId));
+    await unlikePost(user, postId);
   }
 
   useEffect(() => {
     async function getData() {
-      const profile = await getUserData(props.user.uid);
-      if (!profile) return;
-      const likedPosts = await getPostsById(profile.appliedPosts);
+      if (!data) return;
+      const likedPosts = await getPostsById(data.appliedPosts);
       setPosts(likedPosts);
+      setLoading(false);
     }
     getData();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="p-10 gap-6 w-full flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
   return (
     <div>
       <PostShowcase
@@ -108,25 +141,34 @@ function AppliedPosts(props: AppliedPostsProps) {
   );
 }
 
-function LikedPosts(props: LikedPostsProps) {
+export function LikedPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const { user, data } = useOutletContext<ProfileOutletProps>();
   const [hiddenPosts, setHiddenPosts] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  async function hideAndUnlikePost(id: string) {
-    setHiddenPosts(hiddenPosts.concat(id));
-    await unlikePost(props.user, id);
+  async function hideAndUnlikePost(postId: string) {
+    setHiddenPosts(hiddenPosts.concat(postId));
+    await unlikePost(user, postId);
   }
 
   useEffect(() => {
     async function getData() {
-      const profile = await getUserData(props.user.uid);
-      if (!profile) return;
-      const likedPosts = await getPostsById(profile.likedPosts);
+      if (!data) return;
+      const likedPosts = await getPostsById(data.likedPosts);
       setPosts(likedPosts);
+      setLoading(false);
     }
     getData();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="p-10 gap-6 w-full flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
   return (
     <div>
       <PostShowcase
@@ -134,6 +176,45 @@ function LikedPosts(props: LikedPostsProps) {
         hide={hideAndUnlikePost}
         hiddenPosts={hiddenPosts}
         emptyMessage="Like a post to see it here"
+      />
+    </div>
+  );
+}
+
+export function MyPosts() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [hiddenPosts, setHiddenPosts] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { data } = useOutletContext<ProfileOutletProps>();
+
+  function hidePost(postId: string) {
+    setHiddenPosts(hiddenPosts.concat(postId));
+  }
+
+  useEffect(() => {
+    async function getData() {
+      if (!data) return;
+      const myPosts = await getPostsById(data.posts);
+      setPosts(myPosts);
+      setLoading(false);
+    }
+    getData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-10 gap-6 w-full flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+  return (
+    <div>
+      <PostShowcase
+        posts={posts}
+        hide={hidePost}
+        hiddenPosts={hiddenPosts}
+        emptyMessage="Create a post to see it here"
       />
     </div>
   );

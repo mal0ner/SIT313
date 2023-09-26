@@ -11,11 +11,14 @@ import SignupPage from '@/pages/SignupPage';
 import NewJobPage from '@/pages/NewJobPage';
 import JobsPage from '@/pages/JobsPage';
 import ErrorPage from '@/pages/ErrorPage';
-import ProfilePage from '@/pages/ProfilePage';
+import ProfilePage, {
+  AppliedPosts,
+  LikedPosts,
+  MyPosts,
+} from '@/pages/ProfilePage';
 import PrivacyPage from '@/pages/PrivacyPage';
 import TermsPage from '@/pages/TermsPage';
 import ConductPage from '@/pages/ConductPage';
-import MyPostsPage from '@/pages/MyPostsPage';
 
 import FreelanceForm from '@/components/FreelanceForm';
 import EmploymentForm from '@/components/EmploymentForm';
@@ -49,12 +52,22 @@ const router = createBrowserRouter([
         element: <JobsPage />,
       },
       {
-        path: 'profile',
+        path: 'profile/',
         element: <ProfilePage />,
-      },
-      {
-        path: 'profile/posts',
-        element: <MyPostsPage />,
+        children: [
+          {
+            path: 'posts',
+            element: <MyPosts />,
+          },
+          {
+            path: 'likes',
+            element: <LikedPosts />,
+          },
+          {
+            path: 'applications',
+            element: <AppliedPosts />,
+          },
+        ],
       },
       {
         path: 'privacy',
