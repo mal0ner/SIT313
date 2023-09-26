@@ -3,8 +3,6 @@ import {
   UserDoc,
   applyToPost,
   auth,
-  checkIsPostApplied,
-  checkIsPostLiked,
   getUserData,
   likePost,
   unapplyToPost,
@@ -94,16 +92,9 @@ function PostCard(props: PostCardProps) {
     async function getPosterData() {
       if (!user) return;
       const userData = await getUserData(props.post.userId);
-      const isPostLiked: boolean = await checkIsPostLiked(
-        user,
-        props.post.postId,
-      );
-      const isPostApplied: boolean = await checkIsPostApplied(
-        user,
-        props.post.postId,
-      );
-      setIsLiked(isPostLiked);
-      setIsApplied(isPostApplied);
+      if (!userData) return;
+      setIsLiked(userData.likedPosts.includes(props.post.postId));
+      setIsApplied(userData.appliedPosts.includes(props.post.postId));
       setPosterData(userData);
     }
     getPosterData();
