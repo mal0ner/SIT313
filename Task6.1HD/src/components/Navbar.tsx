@@ -33,7 +33,7 @@ function Navbar() {
   }, []);
   return (
     <>
-      <div className="flex justify-between items-center font-josefin m-4">
+      <div className="flex justify-between items-center font-josefin px-4 py-2 backdrop-blur-xl bg-white/70 fixed w-full top-0">
         <h1 className="font-bold italic text-xl select-none">
           <Link to={'/'}>
             <span className="bg-sky-200 p-2 rounded hover:bg-blue-300 transition ease duration-200">
