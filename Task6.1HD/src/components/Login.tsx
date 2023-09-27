@@ -7,6 +7,7 @@ import * as z from 'zod';
 import {
   checkUserExists,
   loginAuthUserWithEmailAndPassword,
+  signInWithGooglePopup,
 } from '@/utils/firebase';
 
 import { Button } from '@/components/ui/button';
@@ -66,13 +67,22 @@ export default function Login() {
     }
   }
 
+  async function onGoogleSignIn() {
+    try {
+      await signInWithGooglePopup();
+      navigate('/');
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
+
   function togglePasswordVisible() {
     setPasswordVisible(!passwordVisible);
   }
 
   return (
     <>
-      <div className="m-10 flex flex-col gap-10 items-center justify-center w-1/2">
+      <div className="m-10 flex flex-col gap-10 items-center justify-center w-3/4 md:w-1/2">
         <div className="text-center flex gap-2">
           <Button
             onClick={() => navigate('/')}
@@ -135,8 +145,18 @@ export default function Login() {
               )}
             />
 
-            <Button className="w-1/2 place-self-center" type="submit">
+            <Button className="w-3/4 md:w-1/2 place-self-center" type="submit">
               Login
+            </Button>
+            <Button
+              className="w-3/4 md:w-1/2 place-self-center flex gap-3 items-center"
+              onClick={async () => onGoogleSignIn()}
+            >
+              Login with
+              <img
+                width={20}
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+              />
             </Button>
             <div className="place-self-center text-center">
               Don't have an account?{' '}

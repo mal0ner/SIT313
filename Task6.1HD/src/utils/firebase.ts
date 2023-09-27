@@ -12,6 +12,8 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 
 import {
@@ -39,21 +41,6 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { v4 } from 'uuid';
 
 import { getCustomAvatarURL } from '@/utils/avatars';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyCfSqLAb2nKru3uwSMcI4TkY1TEgy00mYs',
-  authDomain: 'devlink-marketplace.firebaseapp.com',
-  projectId: 'devlink-marketplace',
-  storageBucket: 'devlink-marketplace.appspot.com',
-  messagingSenderId: '729742036861',
-  appId: '1:729742036861:web:d25a02ce1f3ba79d50c614',
-  measurementId: 'G-PFFL9E5G40',
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
-// const analytics = getAnalytics(app);
 
 export type UserDoc = {
   createdAt: Timestamp;
@@ -91,9 +78,43 @@ export type Post = {
   imageURL: string | null;
 };
 
+const firebaseConfig = {
+  apiKey: 'AIzaSyCfSqLAb2nKru3uwSMcI4TkY1TEgy00mYs',
+  authDomain: 'devlink-marketplace.firebaseapp.com',
+  projectId: 'devlink-marketplace',
+  storageBucket: 'devlink-marketplace.appspot.com',
+  messagingSenderId: '729742036861',
+  appId: '1:729742036861:web:d25a02ce1f3ba79d50c614',
+  measurementId: 'G-PFFL9E5G40',
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+// const analytics = getAnalytics(app);
+
+//google authentication
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account',
+});
+
 export const auth = getAuth();
 export const db = getFirestore(app);
 
+export async function signInWithGooglePopup() {
+  try {
+    const { user } = await signInWithPopup(auth, provider);
+    if (!user.email) return;
+    const name =
+      user.displayName ?? user.email.slice(0, user.email.indexOf('@'));
+    const avatarURL = getCustomAvatarURL(user.email);
+    await updateProfile(user, { displayName: name, photoURL: avatarURL });
+    await createUserDocFromAuth(user, name);
+  } catch (error) {
+    throw error;
+  }
+}
 // from https://stackoverflow.com/questions/51562995/how-can-i-check-if-user-exists-in-firebase
 export async function checkUserExists(email: string): Promise<boolean> {
   let signInMethods: string[] = await fetchSignInMethodsForEmail(auth, email);
