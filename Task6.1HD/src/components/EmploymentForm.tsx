@@ -26,11 +26,6 @@ import {
 } from '@/utils/firebase';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
 
 //coerce allows for string input to be autocast to number
 const formSchema = z
@@ -70,9 +65,6 @@ const formSchema = z
 function EmploymentForm() {
   const navigate = useNavigate();
   const [imageList, setImageList] = useState<FileList | null>(null);
-  const [paymentComplete, setPaymentComplete] = useState<boolean>(false);
-  const stripe = useStripe();
-  const elements = useElements();
 
   // define our form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -97,24 +89,6 @@ function EmploymentForm() {
       createdDate: Timestamp.now(),
     },
   });
-
-  async function handlePayment() {
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      redirect: 'if_required',
-    });
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    setPaymentComplete(true);
-  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!auth.currentUser) {
@@ -398,24 +372,7 @@ function EmploymentForm() {
               />
             </div>
 
-            {!paymentComplete && (
-              <>
-                <PaymentElement />
-                <Button disabled={!stripe} onClick={handlePayment}>
-                  Purchase $10
-                </Button>
-              </>
-            )}
-            {paymentComplete && (
-              <>
-                <p className="text-lg font-bold">
-                  🎉 Thank you! Your purchase is all set
-                </p>
-                <Button type="submit" className="flex gap-1 items-center">
-                  Post
-                </Button>
-              </>
-            )}
+            <Button type="submit">Post</Button>
           </form>
         </Form>
       </div>
