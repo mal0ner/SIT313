@@ -10,6 +10,9 @@ Cameron Malone 218344989
 - Using Events for passing data up the component tree: https://www.freecodecamp.org/news/pass-data-between-components-in-react/
 - Stripe JS Redirect only if necessary: https://github.com/vercel/next.js/discussions/33846
 - creating a mock paymentIntent for Stripe: https://stripe.com/docs/api/payment_intents/create?lang=node
+- Stripe JS and React Integration: https://www.youtube.com/watch?v=e-whXipfRvg
+- Stripe Official Docs on react integration: https://stripe.com/docs/stripe-js/react
+- Stripe and Firebase integration (PAID SOLUTION, not used): https://www.youtube.com/watch?v=xi3F2Zv91UE
 
 ### Fixes
 
