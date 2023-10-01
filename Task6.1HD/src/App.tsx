@@ -11,6 +11,7 @@ function App() {
   return (
     <>
       <Navbar></Navbar>
+      <div className="py-10"></div>
       <Outlet />
       <Footer></Footer>
     </>
