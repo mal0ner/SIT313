@@ -1,0 +1,2 @@
+- [ ] Add user data context so it can be used across the project
+- [ ] Use outlet for the profile page to prevent unecessary reloads of the profile card component at the top and also pass the user data down through props to child components (maybe?)
