@@ -22,6 +22,7 @@ import ConductPage from '@/pages/ConductPage';
 
 import FreelanceForm from '@/components/FreelanceForm';
 import EmploymentForm from '@/components/EmploymentForm';
+import PaymentPage from './pages/PaymentPage';
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: 'conduct',
         element: <ConductPage />,
+      },
+      {
+        path: 'payment',
+        element: <PaymentPage />,
       },
     ],
   },
