@@ -1,32 +1,10 @@
 import { Outlet, NavLink, Navigate } from 'react-router-dom';
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '@/context/user.context';
 import { Loader2, Sparkle } from 'lucide-react';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-
-const PUBLIC_KEY =
-  'pk_test_51Nup4mJ4LHIpY7ymF0QCaUzcDPOFLXGJMTH4KGnAax6z50tSLT8Hcg4sNogbSp7xGYvR5PnF14d5iMKMwKzgPPZf00WWaUXGoc';
-
-const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
 function NewJobPage() {
   const { user, loading, error } = useContext(UserContext);
-  const [clientSecret, setClientSecret] = useState('');
-
-  useEffect(() => {
-    fetch('http://localhost:5252/create-payment-intent', {
-      method: 'POST',
-      body: JSON.stringify({}),
-    })
-      .then(async (res) => {
-        const { clientSecret } = await res.json();
-        setClientSecret(clientSecret);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
 
   if (loading) {
     return (
@@ -79,9 +57,7 @@ function NewJobPage() {
             </NavLink>
           </div>
           <div className="outline outline-sky-200 outline-6 rounded">
-            <Elements stripe={stripeTestPromise} options={{ clientSecret }}>
-              <Outlet />
-            </Elements>
+            <Outlet />
           </div>
         </div>
       </div>
